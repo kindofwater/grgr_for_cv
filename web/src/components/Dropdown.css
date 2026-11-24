@@ -1,0 +1,89 @@
+/* 재사용 드롭다운 — 네이티브 select 대체. 계정 드롭다운(.acct-menu) 룩 + 살짝 올라오는 애니메이션. */
+.dd { position: relative; width: 100%; }
+
+.dd-btn {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 13px 14px;
+  font-size: 18px;
+  font-family: inherit;
+  background: white;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s;
+  -webkit-tap-highlight-color: transparent;   /* 모바일 탭 시 회색/파란 하이라이트 제거 */
+  user-select: none;                            /* 값 텍스트 선택 하이라이트 방지 */
+}
+.dd-btn.dd-open { border-color: var(--primary); }
+/* 열렸을 때만 아래 모서리 각지게 → 아래 붙는 메뉴와 한 덩어리(붙어있는 느낌) */
+.dd-btn.dd-open { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+/* 위로 뒤집힐 때(flip): 메뉴가 컨트롤 '위'에 붙음 → 위 모서리 각지게, 아래는 둥글게 */
+.dd-btn.dd-open-up { border-radius: 0 0 8px 8px; }
+.dd-btn.has-error { border-color: var(--danger); }
+.dd-btn:disabled { background: var(--surface); color: var(--text-muted); cursor: default; pointer-events: none; }
+/* 클릭(마우스) 시 브라우저 기본 하늘색 포커스링·active 배경 제거 — 흰 배경+파란 테두리만.
+   키보드 포커스(:focus-visible)일 때만 접근성 ring 유지. */
+.dd-btn:focus { outline: none; }
+.dd-btn:focus, .dd-btn:active { background: #fff; }
+.dd-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+/* 작은 변형(size="sm") — 리뷰 폼 등 컴팩트 입력에 맞춤 */
+.dd-sm .dd-btn { padding: 8px 13px; font-size: 15px; }
+/* sm 메뉴는 포털이라 .dd-sm 안에 없음 → 별도 클래스(dd-menu-sm). 6+7=13 → sm 컨트롤(좌패딩 13)과 정렬·크기 일치 */
+.dd-menu-sm .dd-item { padding: 6px 7px; font-size: 15px; }
+.dd-value { display: inline-flex; align-items: center; gap: 6px; min-width: 0; overflow: hidden; }
+.dd-label { flex-shrink: 0; color: var(--text-muted); }
+.dd-label::after { content: ':'; }
+.dd-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.dd-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
+.dd-dot.dot-green { background: var(--primary-dark); }
+.dd-dot.dot-red { background: var(--border-strong); }
+.dd-caret { color: var(--text-muted); flex: 0 0 auto; transition: transform 0.15s; }
+.dd-btn.dd-open .dd-caret { transform: rotate(180deg); }
+
+.dd-menu {
+  /* 위치는 Dropdown.jsx가 포털로 body에 띄우며 inline(position:fixed; top/left/width)로 지정.
+     컨트롤 바로 아래에 '붙는' 패널 — 같은 파란 테두리, 위 모서리 각지게, 아래만 둥글게. */
+  list-style: none;
+  margin: 0;
+  padding: 3px 6px;                  /* 세로 패딩 축소(첫 항목 위·마지막 항목 아래 여백). 좌우 6은 정렬 유지 */
+  box-sizing: border-box;            /* width를 컨트롤과 정확히 일치 (메뉴가 더 넓던 것 수정) */
+  font-family: var(--sans);          /* 포털(body)이라 컨트롤 폰트 상속 못 받음 → 명시(같은 폰트) */
+  background: var(--card);
+  border: 1px solid var(--primary);  /* 열린 컨트롤과 같은 색 → 한 덩어리로 보임 */
+  border-top: 0;                     /* 컨트롤 아래 테두리가 경계 → 이중선·틈 없이 붙음 */
+  border-radius: 0 0 8px 8px;        /* 위는 각지게(붙음), 아래만 둥글게 */
+  box-shadow: 0 6px 16px rgba(39, 41, 50, 0.13);
+  z-index: 1100;
+  max-height: 280px;
+  overflow-y: auto;
+  animation: dd-rise 0.13s ease;     /* 붙어있으니 이동 없이 페이드만 */
+}
+@keyframes dd-rise {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+/* 위로 뒤집힐 때: 메뉴가 컨트롤 '위'에 붙음 → 위는 둥글게, 아래는 각지게, 위 테두리 살리고 아래 제거 */
+.dd-menu.dd-menu-up {
+  border-top: 1px solid var(--primary);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+}
+.dd-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;            /* 컨트롤 .dd-value 와 동일 (점-텍스트 간격 일치) */
+  padding: 7px 8px;    /* 세로 약간 축소. 좌측 6+8=14 → 컨트롤(기본 좌패딩 14)과 텍스트 정렬 일치 */
+  border-radius: 8px;
+  font-size: 18px;     /* 컨트롤 기본(18px)과 동일 */
+  color: var(--text);
+  cursor: pointer;
+}
+.dd-item:hover { background: var(--surface); }
+.dd-item.is-selected { color: var(--primary-dark); font-weight: 700; }

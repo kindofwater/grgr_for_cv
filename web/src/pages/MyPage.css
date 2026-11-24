@@ -1,0 +1,109 @@
+/* ⚠️ width:100% + border-box 필수 — 빼면 내용 길이에 따라 페이지 폭이 널뛴다.
+   .my-wrap은 #root(display:flex; flex-direction:column)의 flex 아이템인데, flex 아이템은
+   교차축 마진이 auto면 stretch가 무효라 폭이 fit-content로 잡힌다(margin:0 auto가 그 경우).
+   지금은 내용이 길어 늘 상한에 걸려 증상이 안 보일 뿐, 리뷰 폼에서 실제로 터진 것과 같은 구조다.
+   콘텐츠 폭은 기존 그대로 822px 유지 — border-box라 패딩을 더해야 같아진다. */
+.my-wrap { width: 100%; box-sizing: border-box; max-width: calc(822px + var(--container-pad) * 2); margin: 0 auto; padding: 32px var(--container-pad); display: grid; grid-template-columns: 240px 1fr; gap: 22px; }   /* 아늑한 중앙: 사이드바 240 + 갭 22 + 콘텐츠 560 = 822, 사이드바+콘텐츠 통째로 페이지 가운데. 전 탭 동일 폭(통일) */
+.my-wrap > * { min-width: 0; }   /* 그리드 자식(사이드바·본문)이 콘텐츠 때문에 안 줄어 좁은 폭에서 가로로 넘치던 것 방지 — #16(.detail-wrap > *)과 동일 층의 해법 */
+@media (max-width: 768px) { .my-wrap { grid-template-columns: 1fr; padding: 16px var(--container-pad); gap: 14px; } }
+
+.my-sidebar { background: var(--card); border: 1px solid var(--border); border-radius: var(--card-radius); padding: 20px; height: fit-content; }
+.my-profile { text-align: center; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--surface); }
+.my-avatar { width: 56px; height: 56px; background: var(--primary-faint); color: var(--primary-dark); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; }
+.my-name { font-size: 17px; font-weight: 700; color: var(--text-h); margin-bottom: 3px; }
+
+.my-wallet { margin-top: 16px; display: flex; flex-direction: column; gap: 9px; }
+.my-wallet-row { display: flex; align-items: center; justify-content: space-between; font-size: 14px; gap: 8px; }
+.my-wallet-row > span { color: var(--text-muted); white-space: nowrap; }
+.my-wallet-row strong { font-weight: 700; color: var(--text-h); font-variant-numeric: tabular-nums; }
+.my-expiry-row { gap: 6px; }
+.my-expiry-row strong { white-space: nowrap; font-size: 13px; letter-spacing: -0.02em; }
+.my-wallet-row .mw-pt { color: var(--primary-dark); }
+.my-wallet-div { border-top: 1px solid var(--border); margin: 4px 0; }
+.my-wallet-group-div { border-top: 1px dashed var(--border); margin: 3px 0; }
+/* 교환 상품 재고 행 — 라벨 | 보유수량 */
+.my-wallet-pass { display: grid; grid-template-columns: 1fr 32px; align-items: center; gap: 8px; font-size: 14px; }
+.my-wallet-pass .mw-pass-name { color: var(--text-muted); white-space: nowrap; }
+.my-wallet-pass .mw-pass-stock { font-weight: 700; color: var(--text-h); text-align: right; font-variant-numeric: tabular-nums; }
+
+.my-menu { display: flex; flex-direction: column; gap: 2px; margin-top: 6px; }
+.my-menu a { padding: 9px 10px; border-radius: 7px; font-size: 14px; color: var(--text-sub); cursor: pointer; }
+.my-menu a:hover { background: var(--bg); }
+.my-menu a.on { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; }
+
+.my-logout { width: 100%; margin-top: 16px; padding: 9px; background: transparent; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; color: var(--text); cursor: pointer; font-family: inherit; }
+.my-logout:hover { background: var(--social-bg); }
+
+/* 회원 탈퇴 (프로필 탭 하단, placeholder — 동작은 준비 중) */
+.my-withdraw { width: 100%; margin-top: 16px; padding: 12px; background: var(--card); border: 1px solid var(--danger-mid); color: var(--danger); border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; }   /* 카드(560) 꽉 채움 — 프로필 카드와 좌우 정렬 일치. 배경 흰색 */
+.my-withdraw:hover { background: var(--danger-light); }
+
+.my-sec { background: var(--card); border: 1px solid var(--border); border-radius: var(--card-radius); padding: 22px 22px 14px; }
+/* 섹션 제목 아래 구분선(#26) — 제목과 내용 분리 */
+.my-sec h3 { font-size: 18px; font-weight: 700; color: var(--text-h); margin: 0 0 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+
+.ph-item { display: flex; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--surface); font-size: 14px; gap: 12px; }
+.ph-item:last-child { border-bottom: none; }
+.ph-item > div:first-child { flex: 1; min-width: 0; }
+.ph-desc { color: var(--text-h); font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ph-date { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.ph-amt { flex: 0 0 56px; text-align: right; font-weight: 700; }
+.ph-amt.plus { color: var(--good); }
+.ph-amt.minus { color: var(--danger); }
+.ph-balance { flex: 0 0 48px; text-align: right; font-size: 14px; color: var(--text-sub); font-weight: 500; }
+
+/* 포인트내역 페이지네이션 — 공용 .pagination의 큰 상하 패딩(28/40px)을 카드 안에선 축소(#23). 밑 여백은 .my-sec 하단 패딩(14px)만 */
+.my-sec .pagination { padding: 14px 0 0; }
+
+.rev-item { padding: 12px 0; border-bottom: 1px solid var(--surface); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.rev-item:last-child { border-bottom: none; }
+.rev-item > div:first-child { flex: 1; min-width: 0; }   /* 텍스트 칸이 줄어들 수 있게 — 긴 근무지명/리뷰가 카드를 뷰포트 밖으로 밀어내 좁은 폭에서 넘치던 것 방지(.ph-item과 동일, #16류) */
+.rev-place { font-size: 14px; font-weight: 700; color: var(--text-h); margin-bottom: 3px; overflow-wrap: anywhere; }   /* 긴 근무지명이 안 쪼개져 넘치던 것 방지 */
+.rev-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
+.rev-preview { font-size: 13px; color: var(--text-sub); overflow-wrap: anywhere; }   /* 긴 리뷰 문자열(URL·붙여쓴 글자)이 안 쪼개져 넘치던 것 방지 */
+.rev-item-actions { display: flex; gap: 6px; flex-shrink: 0; padding-top: 2px; }
+/* 상세 리뷰(ReviewCard .btn-edit-review/.btn-delete-review)와 통일 — 30px 원형 + 테두리(#25·#27) */
+.rev-act { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: transparent; border: 1px solid; cursor: pointer; padding: 0; font-family: inherit; line-height: 0; }
+.rev-act:disabled { opacity: .4; cursor: default; }
+.rev-act-edit { color: var(--primary); border-color: var(--primary-mid); }
+.rev-act-edit:hover { background: var(--primary-light); }
+.rev-act-del { color: var(--danger); border-color: var(--danger-mid); }
+.rev-act-del:hover { background: var(--danger-light); }
+
+.my-empty { text-align: center; padding: 40px 20px; color: var(--text); }
+.my-empty button { margin-top: 14px; }
+
+/* 프로필 수정 폼 — 2열 그리드 + 라벨 위(stacked), 카드(560) 폭 활용 */
+.profile-form { display: flex; flex-direction: column; gap: 18px; }
+/* 소속학교(읽기전용) — 라벨+값 한 줄, 아래 구분선으로 편집영역과 분리 */
+.pf-readonly { display: flex; align-items: baseline; gap: 14px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.pf-ro-label { flex: 0 0 auto; font-size: 13px; font-weight: 600; color: var(--text-sub); }
+.pf-ro-val { font-size: 15px; font-weight: 600; color: var(--text); }
+/* 편집 필드 2열 — 각 셀 라벨(위) + 입력(아래, 셀 폭 꽉) */
+.pf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; }
+.pf-field { display: flex; flex-direction: column; min-width: 0; }
+.pf-label { margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--text-sub); }
+.pf-field .dd { width: 100%; }
+@media (max-width: 520px) { .pf-grid { grid-template-columns: 1fr; } }   /* 좁은 폭: 1열 */
+.pf-save { align-self: flex-end; margin-top: 4px; padding: 6px 14px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+.pf-save:hover { filter: brightness(1.05); }
+.pf-save:disabled { opacity: .5; cursor: default; }
+.pf-save.is-saving:disabled { opacity: 1; cursor: wait; }
+
+/* 비밀번호 변경 — 개인정보 확인 박스 밖의 독립 계정 작업. */
+.pf-pw-btn { width: 100%; padding: 9px 0; background: var(--card); color: var(--primary); border: 1px solid var(--primary-mid); border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.pf-pw-btn:hover { background: var(--primary-light); }
+.pf-pw-btn:disabled { opacity: .55; cursor: default; }
+.pf-reset-error { text-align: left; }
+/* 프로필 수정 진입 게이트 — 폼 대신 흰 박스 가운데 비밀번호 확인. 박스(.my-sec) 모양은 그대로라 반응형 동일 */
+.pf-lock { display: flex; align-items: center; justify-content: center; min-height: 340px; }
+.pf-lock-inner { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; max-width: 300px; text-align: center; }
+.pf-lock .pf-lock-title { margin: 0; padding: 0; border-bottom: none; font-size: 17px; }   /* .my-sec h3 의 밑줄·여백 해제 */
+.pf-lock-desc { margin: 0 0 6px; font-size: 13px; color: var(--text-sub); }
+.pf-lock-input { width: 100%; min-height: 44px; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: inherit; }
+.pf-lock-input:focus { outline: none; border-color: var(--primary); }
+.pf-lock-err { font-size: 13px; color: var(--danger); }
+.pf-lock-btn { width: 100%; box-sizing: border-box; padding: 9px 0; background: var(--primary); color: white; border: 1px solid transparent; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+.pf-lock-btn:hover { filter: brightness(1.05); }
+.pf-lock-btn:disabled { opacity: .5; cursor: default; }
+.pf-lock-reset-note { width: 100%; margin: 0; color: var(--text-sub); font-size: 12px; line-height: 1.5; text-align: left; }

@@ -1,0 +1,150 @@
+/* 리워드 광고 모달 (components/AdModal) — 교환센터 '광고 시청하기'에서 띄움.
+   껍데기(오버레이·폭·중앙정렬)는 공용 Modal.jsx 셸이 담당하고, 이 파일은 광고 내용물만 소유한다.
+   닫기는 X · '포인트 받기' · 이미지(가게 보러가기) 3가지로만 (배경/Esc로는 안 닫힘 — dismissible={false}). */
+
+/* 광고 카드 — 공용 .modal 위에 덧칠. 이미지가 카드를 꽉 채우므로 패딩·배경을 없앤다.
+   (폭·중앙정렬·애니메이션·스크림은 공용 셸이 담당) */
+.modal.ad-modal {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+  background: transparent;  /* 이미지 뒤 밝은 배경 제거 → 라운드 모서리 흰선(AA) 차단. 흰색은 .ad-foot/.ad-state에만 */
+  text-align: left;
+}
+
+/* ── 광고 플레이어 (4:5, 풀블리드) ── */
+.ad-player {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: transparent;
+}
+.ad-player.is-clickable { cursor: pointer; }
+.ad-media {
+  /* 1px 오버필 — 가장자리에 배경(연회색)이 비치는 것 방지 */
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  margin: -1px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── 우상단 닫기 X + 카운트다운 링 (동심원) ── */
+.ad-corner {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+}
+.ad-ring {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+.ad-ring-track { stroke: rgba(255, 255, 255, 0.35); }
+.ad-ring-bar {
+  stroke: var(--accent);
+  transition: stroke-dashoffset 0.1s linear;
+}
+.ad-x {
+  position: absolute;
+  inset: 0;
+  margin: auto; /* 44px 코너 정중앙 */
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ad-x:hover { background: rgba(0, 0, 0, 0.75); }
+
+/* 가게 이동 힌트 (해제 후) — 클릭은 플레이어로 통과 */
+.ad-shophint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 22px 12px 10px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.65));
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+/* ── 받기 버튼 영역 ── */
+.ad-foot { padding: 14px; background: var(--card); }
+.ad-claim {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: var(--card-radius);
+  background: var(--accent);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.ad-claim:hover:not(:disabled) { filter: brightness(1.05); }
+.ad-claim:disabled {
+  background: var(--border);
+  color: var(--text-muted);
+  cursor: default;
+}
+.ad-claim.is-ready { animation: ad-pulse 1.5s ease-in-out infinite; }
+@keyframes ad-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(250, 169, 22, 0); }
+  50%      { box-shadow: 0 0 0 5px rgba(250, 169, 22, 0.18); }
+}
+
+/* ── 상태 화면 (loading/capped/noads/error) ── */
+.ad-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  padding: 36px 20px;
+  min-height: 200px;
+  background: var(--card);
+}
+.ad-emoji { font-size: 38px; }
+.ad-msg { color: var(--text-sub); font-size: 15px; line-height: 1.5; }
+.ad-back {
+  padding: 11px 26px;
+  border: 1.5px solid var(--primary);
+  border-radius: var(--card-radius);
+  background: transparent;
+  color: var(--primary-dark);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.ad-back:hover { background: var(--primary); color: #fff; }
+
+/* 모션 저감 선호 존중 (전정장애 등) */
+@media (prefers-reduced-motion: reduce) {
+  .ad-claim.is-ready { animation: none; }
+}

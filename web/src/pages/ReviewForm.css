@@ -1,0 +1,464 @@
+/* 디자인 토큰은 index.css :root 단일 소스 (여기서 재정의하지 않음) */
+
+body {
+  background: var(--bg);
+}
+
+/* ⚠️ width:100% + border-box가 핵심 — 빼면 근무지명 길이에 따라 폼 폭이 널뛴다.
+   .form-wrap은 #root(display:flex; flex-direction:column)의 flex 아이템이다.
+   flex 아이템은 교차축 마진이 auto면 stretch가 무효가 되는데, 여기 margin:0 auto가
+   바로 그 경우라 폭이 fit-content로 잡혔다. 그래서 긴 근무지명(스마트보안학부·정보보호
+   대학원·개인정보보호대학원행정팀)은 660px, 짧은 이름(노동대학원행정팀)은 524px —
+   같은 창에서 136px 차이. width를 명시해 폭을 내용과 무관하게 고정한다.
+   콘텐츠 폭 524px는 수정 전 '이름이 짧을 때' 자연스럽게 잡히던 폭(2026-07-20 실측·PM 확정).
+   max-width에 패딩을 더하는 이유: border-box라 max-width가 패딩을 포함하므로,
+   그냥 524px로 두면 콘텐츠가 524-패딩으로 더 좁아진다. 이렇게 두면 콘텐츠가 정확히 524px. */
+.form-wrap {
+  width: 100%;
+  box-sizing: border-box;
+  max-width: calc(524px + var(--container-pad) * 2);
+  margin: 0 auto;
+  padding: clamp(16px, calc(5.16vw - 17.55px), 32px) var(--container-pad);
+  font-family: var(--sans);
+}
+
+.form-wrap button,
+.form-wrap textarea {
+  font-family: var(--sans);
+}
+
+.review-form-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;            /* 정보 블록 오른쪽에서 안 줄어들게 */
+  white-space: nowrap;
+  margin: 0;
+  border: 0;
+  padding: 4px;
+  background: transparent;
+  color: var(--text-sub);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.review-form-back:hover {
+  color: var(--primary-dark);
+}
+
+.review-form-back:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.form-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: clamp(22px, calc(3.23vw + 1.03px), 32px)
+    clamp(18px, calc(4.52vw - 11.35px), 32px);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-place {
+  display: flex;
+  align-items: flex-start;          /* 뒤로가기 버튼을 org 라인 쪽(위)에 맞춤 */
+  justify-content: space-between;   /* 정보 왼쪽 · 뒤로가기 오른쪽 */
+  gap: 12px;
+  margin-bottom: 22px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--surface);
+}
+
+.form-place-info { min-width: 0; }   /* 긴 근무지명 줄바꿈/말줄임 허용(버튼 폭 보호) */
+
+/* 기관/근무지 2줄 헤더 — 5곳 통일: 기관 13/500, 근무지 21/800, lh 1.2, 두 줄 간격 2px */
+.det-org {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text-sub);
+  margin-bottom: 2px;   /* 근로장학기관↔근무지명 간격(5곳 통일 2px) */
+}
+
+.det-name {
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.form-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 26px;
+}
+
+.fg {
+  margin-bottom: 22px;
+}
+
+.fg label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.fg label.fg-lab {
+  margin-bottom: 4px;
+}
+
+.fg-lab,
+.rate-row > .rate-cat,
+.rate-cat-wrap .rate-cat {
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text);
+}
+.fg-lab { font-size: 17px; }                      /* 소제목급(근로 학기·평점·추천 질문·실제 업무·자유 의견) */
+.rate-row > .rate-cat,
+.rate-cat-wrap .rate-cat { font-size: 15px; }     /* 평점 항목 라벨은 약간 작게(업무·자기계발·분위기·시간유연성·추천 점수) */
+
+.fg .hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.fg-note,
+.rate-cat-wrap .recommend-status {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.fg-note {
+  margin-bottom: 9px;
+}
+
+.recommend-heading-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  margin-bottom: 9px;
+}
+
+.recommend-heading-row .fg-lab,
+.recommend-heading-row .fg-note {
+  margin-bottom: 0;
+}
+
+.stars {
+  display: flex;
+  gap: clamp(4px, 0.62vw, 6px);
+}
+
+.star {
+  font-size: clamp(24px, calc(1.29vw + 15.62px), 28px);
+  color: var(--border);
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+}
+
+.star.on {
+  color: #fbbf24;
+}
+
+.star.half {
+  color: var(--border);
+}
+
+.star.half::after {
+  content: "★";
+  color: #fbbf24;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  overflow: hidden;
+  display: block;
+}
+
+.star:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.recommend-status {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 5px;
+  text-align: center;
+  font-weight: 400;
+}
+
+.recommend-status.on {
+  color: var(--primary-dark);
+}
+
+.recommend-status.off {
+  color: var(--accent-deep);
+}
+
+textarea {
+  width: 100%;
+  box-sizing: border-box;   /* width 100%에 패딩·테두리 포함 → 좁은 폭에서 카드 밖으로 안 튀어나옴 */
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 11px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 96px;
+  outline: none;
+}
+
+/* 자유 의견 — 더 긴 입력이라 기본보다 높게 (인라인 style 대체) */
+textarea.textarea-long {
+  min-height: 140px;
+}
+
+textarea:focus {
+  border-color: var(--primary-dark);
+}
+
+.char-cnt {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: right;
+  margin-top: 3px;
+}
+
+.char-cnt.ok {
+  color: var(--primary-dark);
+}
+
+.duplicate-review-notice {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  margin-top: 7px;
+  color: var(--danger);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.duplicate-review-notice button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--danger);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.duplicate-review-notice button:hover {
+  color: var(--text);
+}
+
+.anonymous-review-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;        /* 위아래 패딩 축소(12→8), min-height 제거로 높이도 컴팩트 */
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.anonymous-review-option:has(input:disabled) {
+  cursor: default;
+}
+
+.anonymous-review-option:has(input:checked) {
+  border-color: var(--primary-mid);
+  background: var(--primary-light);
+}
+
+.anonymous-review-option input {
+  flex: 0 0 auto;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  background: var(--card);
+  cursor: inherit;
+}
+
+.anonymous-review-option input:checked {
+  border-color: var(--primary);
+  background: var(--primary);
+  box-shadow: inset 0 0 0 4px var(--card);
+}
+
+.anonymous-review-option input:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.anonymous-review-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1px;            /* 제목↔설명 텍스트 간격 축소 */
+}
+
+.anonymous-review-copy strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.anonymous-review-copy span {
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.btn-submit {
+  width: 100%;
+  box-sizing: border-box;   /* width 100%에 패딩 포함 → 좁은 폭에서 안 튀어나옴(textarea와 동일 정렬) */
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 13px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    filter 0.15s,
+    transform 0.15s,
+    box-shadow 0.15s;
+  box-shadow: 0 1px 2px rgba(67, 146, 241, 0.22);
+}
+
+.btn-submit:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.btn-submit:disabled {
+  background: var(--border-strong);
+  box-shadow: none;
+  cursor: default;
+  filter: none;
+  transform: none;
+}
+
+/* 제출 요청 중에는 중복 클릭만 막고, 버튼의 문구·색·크기는 그대로 유지한다. */
+.btn-submit.is-submitting:disabled {
+  background: var(--primary);
+  box-shadow: 0 1px 2px rgba(67, 146, 241, 0.22);
+  cursor: wait;
+}
+
+/* 제출 버튼 옆 포인트 증감 텍스트 (신규 리뷰 +30P 닉네임 공개 · +20P 익명, 기존 리뷰 익명 전환 ±10P 등) */
+.submit-point-delta {
+  font-weight: 600;
+  opacity: 0.92;
+}
+
+.rate-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+.rate-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+}
+
+.rate-row:not(.rate-row-rec):nth-child(-n + 2) {
+  border-bottom: 1px solid var(--surface);
+}
+
+.rate-row > .rate-cat {
+  order: 1;
+  flex: 0 0 auto;
+}
+
+.rate-row .stars {
+  order: 3;
+  gap: 3px;
+  font-size: 20px;
+  margin-left: auto;
+}
+
+.rate-row .star-val {
+  display: none;
+}
+
+.rate-row-rec {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--surface);
+  padding: 10px 0 0;
+  margin-top: 4px;
+  align-items: center;
+}
+
+.rate-cat-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rate-cat-wrap .rate-cat {
+  flex: none;
+  order: 0;
+}
+
+.rate-cat-wrap .recommend-status {
+  text-align: left;
+  margin: 0;
+  min-height: 17px;
+}
+
+.rate-cat-wrap .recommend-status.on {
+  color: var(--primary-dark);
+}
+
+.rate-cat-wrap .recommend-status.off {
+  color: var(--accent-deep);
+}
+
+.rate-row-rec .star-val {
+  min-width: 32px;
+  white-space: nowrap;
+}
+
+/* 좁은 폭: 평점 2열 → 1열. 열이 좁아지면 라벨+별이 열 폭을 넘겨 별이 칸 밖으로 튀어나오던 것 방지.
+   경계는 ~490px(별+'시간 유연성' 라벨 기준) → 그 바로 위 500px에서 전환(2열 최대 유지). */
+@media (max-width: 500px) {
+  .rate-list {
+    grid-template-columns: 1fr;
+  }
+  /* 1열에선 '위 2행만 구분선'(2열용 nth-child 규칙)이 어색 → 행마다 구분선, 마지막 행만 제외. */
+  .rate-list .rate-row:not(.rate-row-rec) {
+    border-bottom: 1px solid var(--surface);
+  }
+  .rate-list .rate-row:not(.rate-row-rec):last-child {
+    border-bottom: 0;
+  }
+}

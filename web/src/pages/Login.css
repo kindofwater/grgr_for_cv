@@ -1,0 +1,426 @@
+/* 근로고래 mockup.html 에서 로그인 화면에 필요한 스타일만 발췌해 옮김. */
+
+/* 디자인 토큰은 index.css :root 단일 소스 (여기서 재정의하지 않음) */
+
+/* 로그인 화면 배경/폰트 */
+#screen-login {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  letter-spacing: -0.01em;
+}
+
+/* navbar 스타일은 components/Navbar.css로 이동 (단일 소스) */
+
+/* ── 로그인 카드 ── */
+.auth-wrap {
+  min-height: calc(100vh - 56px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+.auth-card {
+  transform: translateY(-40px);   /* 세로 중앙보다 40px 위 */
+}
+.auth-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  box-sizing: border-box;   /* max-width가 패딩·테두리 포함한 총 가로가 되도록 */
+  width: 100%;
+  text-align: center;
+  position: relative;            /* 하단 진척도 바(absolute) 기준 */
+  overflow: hidden;              /* 진척도 바 모서리를 카드 라운드에 맞춰 클립 */
+}
+/* 이메일 단계 카드: 가로 1080px + 세로도 비례(높은 비율). signup(.is-profile)엔 영향 X */
+.auth-card:not(.is-profile) { max-width: 900px; height: 400px; padding: 32px 65px; display: flex; flex-direction: column; justify-content: center; }
+.auth-logo {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin-bottom: 14px;
+}
+.auth-tag {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
+/* ── 이메일 입력 필드 (밑줄형 + 오른쪽 화살표) ── */
+.email-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--border);   /* 비활성 = 회색 밑줄 */
+  transition: border-color 0.15s;
+}
+.email-field:focus-within {
+  border-bottom-color: var(--primary);       /* 활성 = 파란 밑줄 */
+}
+.email-control {
+  position: relative;
+  flex: 1;                                    /* 입력+라벨 묶음이 필드 폭 채움 */
+}
+.email-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 32px 4px 8px;                      /* 위 여백↑ 아래 여백↓ → 입력 글자가 밑줄에 붙음 */
+  font-size: 22px;                            /* 입력한 글자 크게 */
+  font-weight: 600;                           /* 입력한 글자 굵게 */
+  font-family: inherit;
+  color: var(--text);
+}
+/* placeholder는 공백(" ")이라 안 보임 — 예시 글씨는 아래 라벨이 담당 */
+.email-input::placeholder { color: transparent; }
+/* 비밀번호 단계: 이메일 필드 잠금(회색·선택 불가) */
+.email-input:disabled { color: var(--text-muted); -webkit-text-fill-color: var(--text-muted); cursor: default; }
+.email-input:disabled + .email-label { color: var(--text-muted); }
+/* 뒤로가기 버튼 (회색 ← 화살표) — 비밀번호 단계에서 이메일 단계로 복귀 */
+.btn-back { align-self: flex-start; background: none; border: none; padding: 0; margin: 0; color: var(--text-muted); cursor: pointer; display: inline-flex; transition: color 0.15s; }
+.btn-back:hover { color: var(--text-sub); }
+.btn-back svg { display: block; }
+.btn-back.is-hidden { visibility: hidden; pointer-events: none; }   /* 자리는 유지(높이 연속성), 표시만 숨김 */
+
+/* 플로팅 라벨: 비활성 = 회색, 필드 중앙에 예시처럼 표시 */
+.email-label {
+  position: absolute;
+  left: 4px;
+  top: calc(50% + 8px);   /* 예시(placeholder) 상태를 8px 내려 밑줄과의 여백 축소 — 포커스 상태는 top:18px 고정이라 무관 */
+  transform: translateY(-50%);
+  color: var(--text-muted);                   /* 비활성: 회색 */
+  font-size: 20px;
+  font-weight: 700;
+  pointer-events: none;                       /* 클릭은 input으로 통과 */
+  transition: top 0.15s ease, font-size 0.15s ease,
+    color 0.15s ease, font-weight 0.15s ease;
+}
+/* 활성(포커스) 또는 입력값 있음 = 위로 작게 + 검은색 */
+.email-input:focus + .email-label,
+.email-input:not(:placeholder-shown) + .email-label {
+  top: 18px;                                  /* 입력 텍스트 바로 위로 (간격 최소화) */
+  font-size: 14px;
+  font-weight: 400;                           /* 활성: 굵기 줄임 (700→400) */
+  color: var(--text);                         /* 활성: 검은색 */
+}
+/* 화살표 진행 버튼은 components/ArrowButton (.btn-arrow) 으로 분리됨 */
+/* 필드 안 화살표도 예시 글자와 같이 8px 내림(세로 중앙 기준 아래로) — 밑줄 위 여백 축소 짝 */
+.email-field .btn-arrow { position: relative; top: 8px; }
+
+/* ── 이메일 단계 2단 레이아웃 (왼쪽 빈칸 | 구분선 | 오른쪽 입력) ── */
+.auth-2col { display: flex; gap: 32px; align-items: stretch; text-align: left; }
+.auth-2col .a2-side { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; }
+.a2-logo { font-weight: 800; color: var(--primary-dark); font-size: clamp(48px, 7vw, 84px); line-height: 1.05; letter-spacing: -1px; text-align: center; }
+.a2-heading { font-size: 18px; font-weight: 700; color: var(--text); text-align: center; }
+/* 비번 단계 전환: 이메일 헤딩은 오른쪽으로 날아가 사라지고, 로그인 헤딩이 왼쪽에서 날아옴 */
+@keyframes heading-out-right { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(40px); } }
+.a2-heading.heading-out-right { animation: heading-out-right 0.25s ease forwards; }
+@keyframes heading-in-left { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+.a2-heading.heading-in-left { animation: heading-in-left 0.28s ease; }
+.auth-2col .a2-side { flex: 0 0 30%; }                         /* 왼쪽 빈 영역(나중에 채움) */
+.auth-2col .a2-divider { width: 1px; background: var(--border); align-self: stretch; margin-right: 20px; }
+.auth-2col .a2-main { flex: 1 1 60%; display: flex; flex-direction: column; justify-content: center; gap: 20px; }   /* 오른쪽 입력(세로 가운데) — 로그인/가입 비번 단계 공통 */
+.auth-2col .a2-main .email-field { margin-bottom: 0; }         /* 세로 간격은 a2-main gap이 담당 */
+/* 2단→세로 전환. 930px: 카드(max 900, 패딩 130) 좌측 30% 칼럼이 헤딩
+   "이메일 입력으로 시작하기"(≈207px)보다 좁아지는 ~920px부터 줄바꿈 —
+   줄바꿈을 허용하느니 그 전에 세로 스택으로 전환한다(768은 그 구간을 방치했음) */
+@media (max-width: 930px) {
+  .auth-2col { flex-direction: column; gap: 20px; }
+  .auth-2col .a2-divider { display: none; }
+  .auth-2col .a2-side { flex: none; }
+  /* 세로 스택 = 모바일 외관 일괄 적용: 로고 한 줄(짧은 라벨 토글은 라벨 기본 규칙 뒤에 — 순서상 여기 두면 죽음) */
+  .a2-logo br { display: none; }
+  /* 세로 스택은 내용이 고정 400px를 넘쳐 overflow:hidden에 잘렸음(잊은경우 링크 포함) → 내용 높이 따름 */
+  .auth-card:not(.is-profile) { height: auto; }
+  /* absolute인 잊은경우 링크(top:100%+2px, ~25px)의 자리를 모든 단계에서 동일하게 예약
+     → auto 높이 카드 안에 링크가 들어오고, SSO↔비번 스왑 높이 점프도 없음(양쪽 단계 동일 높이) */
+  .auth-switch { margin-bottom: 27px; }   /* 잊은경우 링크(+2~27px) 자리 — 정확히 링크 높이만큼만 */
+  .auth-2col .a2-side { gap: 12px; }      /* 로고↔헤딩 간격 축소(데스크톱 24px는 2단용) */
+  /* 뒤로가기 화살표를 카드 좌상단 절대배치(.signup-back 컨벤션) — 데스크톱 2단용 자리 예약(visibility)이
+     세로 스택의 이메일 단계에서 헤딩↔입력창 사이 ~48px 빈 띠를 만들던 잔재 제거. 흐름에서 빠지므로
+     이메일↔비번 단계 전환에도 높이 변화 없음 */
+  .auth-2col .a2-main .btn-back { position: absolute; top: 18px; left: 18px; z-index: 2; }
+}
+
+/* ── 단계 전환 애니메이션 ── */
+/* 순차 전환: 확인 버튼 사라짐 → SSO 버튼 퇴장(아래로 페이드) → 끝나면 비번 필드 등장 */
+.auth-switch {
+  position: relative;
+  min-height: 70px;   /* SSO 버튼 ↔ 비밀번호 필드 높이차 흡수 → 단계 전환 시 높이 점프 방지 */
+}
+/* SSO 버튼 퇴장: 제자리(in-flow)에서 아래로 빠지며 페이드아웃 */
+@keyframes btn-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(12px); }
+}
+.btn-leaving {
+  animation: btn-out 0.25s ease forwards;
+  pointer-events: none;                       /* 퇴장 중 클릭 막음 */
+}
+/* 비밀번호 필드 진입: 위에서 살짝 내려오며 나타남 (SSO 퇴장과 동시·같은 방향) */
+@keyframes field-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.field-enter {
+  animation: field-in 0.25s ease;
+}
+/* 뒤로가기: 비밀번호 필드 퇴장(아래로 내려가며 페이드) — field-enter보다 뒤에 정의해 우선 */
+@keyframes field-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(10px); }
+}
+.field-leaving { animation: field-out 0.22s ease forwards; pointer-events: none; }
+/* 뒤로가기 후 SSO 버튼 재등장(아래에서 올라오며 페이드인) */
+@keyframes btn-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.btn-returning { animation: btn-in 0.25s ease; }
+
+.btn-sso {
+  width: 100%;
+  background: var(--text);
+  color: white;
+  border: none;
+  padding: 13px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  margin-bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: filter 0.15s;
+}
+.btn-sso:hover { filter: brightness(1.15); }
+
+/* ── 회원가입 2단계: 자격(credentials) 블록 왼쪽으로 퇴장 ── */
+@keyframes slide-out-left {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-48px); }
+}
+.auth-credentials.leaving-left {
+  animation: slide-out-left 0.28s ease forwards;
+  pointer-events: none;                         /* 퇴장 중 클릭 막음 */
+}
+
+/* ── 회원가입 2단계 카드(프로필 입력): 더 넓게 + 좌측 정렬 2단 레이아웃 ── */
+.auth-card.is-profile {
+  max-width: 800px;
+  padding: 52px 48px;   /* 이메일 단계의 가로·세로 확대 영향 안 받음(독립) */
+  text-align: left;
+}
+/* 프로필 입력 div: 오른쪽에서 슬라이드 인 (credentials 가 왼쪽으로 빠진 뒤 등장) */
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(48px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.signup-profile {
+  display: flex;
+  gap: 32px;
+  align-items: stretch;
+  animation: slide-in-right 0.28s ease;
+}
+.signup-profile .sp-left {
+  flex: 1 1 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  order: 3;   /* 좌우 스왑: 입력 묶음을 오른쪽으로 */
+}
+.signup-profile .sp-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sp-field-label {
+  font-size: 27px;
+  font-weight: 800;
+  color: var(--text);
+}
+/* 라벨 옆 인라인 에러(빨강)·안내(파랑) — 14px 얇은 본문체, 큰 라벨은 건드리지 않음 */
+.sp-field-error { margin-left: 10px; font-size: 14px; font-weight: 400; color: var(--danger); vertical-align: middle; }
+.sp-field-notice { margin-left: 10px; font-size: 14px; font-weight: 400; color: var(--primary); vertical-align: middle; }
+.sp-nick-reco { color: var(--text); }   /* "추천 :" 라벨은 파랑 대신 검정 */
+/* 추천 닉네임 칩 — 누르면 입력칸에 채워지는 버튼 */
+.sp-nick-suggest { padding: 2px 10px; border: none; border-radius: 8px; background: var(--surface); color: var(--text-sub); font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer; vertical-align: middle; }
+.sp-nick-suggest:hover { background: var(--border); }
+/* 제출(화살표) 버튼 아래 통신 중 표시 — 점 3개가 차례로 차오름.
+   absolute 배치라 나타나도 버튼·로고가 위로 안 밀림(레이아웃 고정) */
+.sp-submit { position: relative; }
+/* OTP 단계 필수 동의 체크박스 3종(#34) — 코드 재전송 아래·인증 버튼 위. * = 필수(빨강) */
+.sp-consent-checks { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; text-align: left; }
+.consent-check { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--text); cursor: pointer; }
+.consent-check input { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; flex: 0 0 auto; margin: 0; }
+.consent-check a { color: var(--primary); text-decoration: underline; }
+.consent-link {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--primary);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.consent-check .req { color: var(--danger); font-style: normal; font-weight: 700; }
+.consent-check .consent-tag { color: var(--primary-dark); font-style: normal; font-weight: 700; flex: 0 0 auto; }
+.sp-loading-dots { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); display: flex; gap: 5px; justify-content: center; }
+.sp-loading-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); animation: sp-dot 1s infinite ease-in-out; }
+.sp-loading-dots span:nth-child(2) { animation-delay: 0.15s; }
+.sp-loading-dots span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes sp-dot { 0%, 80%, 100% { opacity: 0.2; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-4px); } }
+.sp-input,
+.sp-select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 14px;
+  font-size: 18px;
+  font-family: inherit;
+  color: var(--text);
+  background: white;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.sp-input:focus,
+.sp-select:focus { border-color: var(--primary); }
+.sp-input::placeholder { color: var(--text-muted); }
+/* 닉네임은 이메일 입력 필드(email-field)와 동일 스타일 — sp-group 안에서는 기본 하단 여백 제거 */
+.sp-group .email-field { margin-bottom: 0; }
+/* 닉네임은 플로팅 라벨 대신 일반 placeholder(이메일 @앞부분) 사용 — 위로 안 올라감 */
+.email-input.nickname-input::placeholder { color: var(--text-muted); }
+/* 플로팅 라벨이 없으니 윗여백(28px, 라벨 자리) 축소 → 헤딩과의 간격 줄임 */
+.email-input.nickname-input { padding-top: 6px; }
+
+/* OTP 안내 라벨(…로 보낸 6자리 코드): 이메일 길이가 임의라 어느 폭에서든 줄바꿈 위험 →
+   포커스 여부와 무관하게 항상 위에 작게 고정 + 한 줄 강제(12px, 넘치면 말줄임).
+   (0,3,0)이라 포커스 규칙(0,2,1)을 이김. has-error(0,3,0)보다 앞에 둬서 에러 시엔 에러 색이 승계. */
+.email-field .email-label.otp-hint {
+  top: 18px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text);
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── 입력 에러: 밑줄 빨강 + 라벨을 빨간 메시지로(위로 올려 작게) ── */
+.email-field.has-error { border-bottom-color: var(--danger) !important; }
+.email-field.has-error .email-label {
+  top: 18px;            /* 비어있어도 위로 올려 에러 메시지를 보이게 */
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--danger);
+}
+.sp-field-label.is-error { color: var(--danger); }   /* 학교 등 라벨 자체를 에러로 바꾸는 필드용(OTP는 옆 span 방식) */
+.sp-select.has-error { border-color: var(--danger); }
+.signup-profile .sp-divider {
+  width: 1px;
+  background: var(--border);
+  align-self: stretch;
+  margin-right: 20px;  /* 좌우 스왑 후 구분선을 입력 쪽으로 약 20px 이동(원래 간격 관계 유지) */
+  order: 2;
+}
+.signup-profile .sp-right {
+  flex: 0 0 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  order: 1;   /* 좌우 스왑: 로고 묶음을 왼쪽으로 */
+}
+.sp-logo {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+/* 이메일 인증 이후(프로필 1~3단계): 카드 세로 확대 + 다음/완료 버튼을 오른쪽 아래 모서리로
+   (버튼은 sp-left 끝에 렌더 — margin-top:auto로 바닥, align-self로 오른쪽) */
+.signup-profile.sp-roomy { min-height: 400px; }
+.sp-roomy .sp-left .sp-submit { margin-top: auto; align-self: flex-end; }
+/* 회원가입 단계 뒤로가기: 입력칸(sp-left)이 order로 우측에 가므로, 버튼은 흐름에서 빼
+   auth-card 맨 왼쪽 위 모서리에 고정(absolute) — 근로고래 로고 위쪽 */
+.signup-back { position: absolute; top: 18px; left: 18px; z-index: 2; }
+
+/* 회원가입 프로필 진척도 바 — 카드 하단에 한 줄, 단계만큼 초록이 차오름 */
+.signup-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 6px;
+  background: var(--border);     /* 트랙(미진행): 회색 */
+}
+.sp-progress-fill {
+  height: 100%;
+  background: #22C55E;           /* 진행: 초록 */
+  transition: width 0.45s ease;  /* 등장/단계 변경 시 차오르는 애니메이션 */
+}
+
+@media (max-width: 682px) {
+  .auth-wrap { padding: 20px 16px; }
+  .auth-card.is-profile { max-width: 380px; }
+  .signup-profile { flex-direction: column; gap: 20px; }
+  .signup-profile .sp-divider { display: none; }
+  .signup-profile .sp-right { flex-direction: row; justify-content: center; gap: 32px; }
+  .sp-logo { display: none; }   /* 모바일 스택에선 로고 텍스트 제거(전 단계 공통) — 제출 버튼만 남김 */
+  /* 제출 버튼 와이드 변형: 위 드롭다운과 같은 폭 + "인증/다음/완료" 라벨 노출 (배색은 기본 파랑/흰 그대로) */
+  .signup-profile .sp-submit { width: 100%; }
+  .signup-profile .sp-submit .btn-arrow { width: 100%; height: 44px; }
+  .signup-profile .sp-submit .btn-arrow .btn-arrow-label { display: inline; font-size: 17px; }
+  .signup-profile .sp-submit .btn-arrow svg { display: none; }   /* 와이드 변형은 글자만 */
+  /* 모바일 세로 스택은 DOM 순서(입력 위 · 로고 아래) 유지 */
+  .signup-profile .sp-left, .signup-profile .sp-right { order: 0; }
+  .signup-profile.sp-roomy { min-height: 0; }   /* 세로 스택은 내용 높이 따름 — 데스크톱 확대 해제 */
+}
+
+/* 회원가입 비밀번호 단계: 비밀번호 + 재입력 두 필드 세로 스택 + 맨밑 제출(화살표) 버튼 */
+.signup-pw { display: flex; flex-direction: column; gap: 14px; }
+.signup-pw .email-field { margin-bottom: 0; }
+.signup-pw .btn-arrow { align-self: flex-end; }
+
+/* ── 비밀번호 재설정: 비번 필드 아래 '잊은 경우' 링크(우측 정렬) + 발송 안내 패널 ── */
+/* 링크는 absolute로 auth-switch(70px) 높이 계산에서 제외 — 안 그러면 SSO↔비번 스왑 시 높이 점프 부활 */
+.pw-forgot { position: absolute; top: calc(100% + 2px); right: 0; display: flex; justify-content: flex-end; }
+.pw-forgot .btn-text-link { text-decoration: underline; }
+.reset-sent { text-align: left; font-size: 16px; font-weight: 600; line-height: 1.7; color: var(--text); }
+.reset-account { text-align: left; font-size: 14px; color: var(--text-muted); }  /* 재설정 대상 계정 표시(/reset-password) */
+.reset-sent .btn-text-link { text-decoration: underline; font-size: inherit; font-weight: inherit; }
+/* 재설정 패널 진입 시 이메일 필드를 '부드럽게 접기' — 한 프레임 언마운트(점프) 대신 max-height
+   전환으로 높이가 흘러내리고, 복귀 땐 다시 펴지며 페이드 인(형제 field-enter와 톤 일치).
+   max-height 80px = 필드 실높이(~66px)보다 약간 큰 상한. border-color 전환은 기본 규칙에서 승계. */
+.auth-2col .a2-main > .email-field {
+  max-height: 80px;
+  overflow: hidden;
+  transition: border-color 0.15s, opacity 0.25s ease, max-height 0.25s ease;
+}
+/* ⚠️ 접기 규칙(0,3,0)보다 구체도가 높아야 max-height:0이 이긴다 — .email-field.is-ghost(0,2,0)로 쓰면 죽은 규칙 */
+.auth-2col .a2-main > .email-field.is-ghost { opacity: 0; pointer-events: none; max-height: 0; }
+
+/* 이메일 라벨 폭별 토글: 기본(데스크톱 2단)은 긴 버전만 — 짧은 버전 전환은 세로 스택(≤930)과 동시.
+   ⚠️ 이 토글은 기본 규칙(.lbl-mobile 숨김) '뒤'에 있어야 산다(동일 구체도 → 순서 승부) */
+.email-label .lbl-mobile { display: none; }
+@media (max-width: 930px) {
+  .email-label .lbl-desktop { display: none; }
+  .email-label .lbl-mobile { display: inline; }   /* "(Ex. example@univ.ac.kr)" */
+}
+
+/* ── 모바일(≤480px) 전용: auth 카드 압축 ── */
+@media (max-width: 480px) {
+  .a2-logo { font-size: clamp(34px, 11vw, 44px); }
+  .auth-card { transform: none; }                 /* 세로 -40px 오프셋 해제(작은 화면은 정중앙) */
+  .auth-card:not(.is-profile) { height: auto; padding: 28px 20px; }   /* 고정 400px 해제 — 세로 스택은 내용 높이 따름 */
+}

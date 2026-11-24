@@ -1,0 +1,239 @@
+/* WorksiteDetail.css — 목업 <style>에서 이식 (CSS 변수 정의 제외, 셀렉터 규칙만) */
+
+/* ── TAGS ── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 5px;
+  font-size: 11px;   /* Home.css .tag와 동일 — 공용 태그 폰트 고정(전역 CSS라 이 규칙이 홈·검색·InfoCard까지 지배했음. clamp(7pt,1.37vw,11px)는 좁은 폭에서 9.33px까지 줄여 홈 추천카드 태그가 작아지던 원인 → 11px 통일) */
+  font-weight: 600;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+}
+
+/* 국가근장 — deep navy */
+.tag-national {
+  background: var(--primary-deep);
+  color: white;
+  font-weight: 700;
+}
+
+/* 학교근장 — bright cobalt */
+.tag-school {
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+}
+
+/* 교내/교외 */
+.tag-loc {
+  background: white;
+  color: var(--primary-dark);
+  box-shadow: inset 0 0 0 1px var(--primary-mid);
+}
+
+/* 단기/장기 */
+.tag-dur {
+  background: white;
+  color: var(--accent-deep);
+  box-shadow: inset 0 0 0 1px var(--accent-mid);
+}
+
+/* 계열·단과대·학과 우대 */
+.tag-blue {
+  background: var(--primary-light);
+  color: var(--primary-dark);
+}
+
+/* 학위·학적 가능여부, 전체 */
+.tag-gray,
+.tag-green,
+.tag-purple {
+  background: var(--surface);
+  color: var(--text-sub);
+}
+
+.tag-region {
+  background: var(--surface);
+  color: var(--text-sub);
+}
+
+.tag-status-open { background: var(--surface); color: var(--text); }
+.tag-status-closed { background: var(--surface); color: var(--text-sub); }
+.tag-rows { margin-top: 6px; display: flex; flex-direction: column; gap: 4px; }
+.tag-row { display: flex; flex-wrap: wrap; row-gap: 4px; }
+.tag-rows .tag { margin-bottom: 0; }
+
+/* ── STATUS BORDER ── */
+.status-open  { border-left: 3px solid var(--primary); }
+.status-closed { border-left: 3px solid var(--border-strong); }
+.status-closed .det-org,
+.status-closed .det-name { color: var(--text-muted); }
+
+/* ── STATUS BADGE ── */
+.det-status-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; margin: 0; flex-shrink: 0; }
+.badge-open { color: var(--primary-dark); background: var(--primary-light); }
+.badge-closed { color: var(--danger); background: var(--danger-light); }
+.det-status-badge .badge-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+.badge-open .badge-dot { background: var(--primary); }
+.badge-closed .badge-dot { background: var(--border-strong); }
+
+/* ── DETAIL LAYOUT ── */
+/* 좌우 패딩 6px — 홈 .body-wrap과 동일 패턴(content-box, max-width=--container). 좁은 폭 축소는 아래 min-width:0가 담당(홈 .home-main과 동일) */
+.detail-wrap { max-width: var(--container); margin: 0 auto; padding: 32px 6px; display: grid; grid-template-columns: 320px 1fr; gap: clamp(6px, calc(7.05vw - 48.15px), 28px); }
+/* 그리드 열(정보+요약 / 리뷰)이 콘텐츠 min-content 이하로도 줄게 → 좁은 폭에서 그리드가 뷰포트만큼 축소되어 navbar·footer와 계속 정렬.
+   (없으면 리뷰 카드의 nowrap 등 최소폭이 열을 넓게 고정 → 카드는 안 줄고 navbar·footer만 줄어 우측이 비던 문제. 홈은 .home-main의 min-width:0로 이미 처리됨) */
+.detail-wrap > * { min-width: 0; }
+
+/* ── INFO CARD ── */
+.info-card { background: white; border: 1px solid var(--border); border-radius: var(--card-radius); padding: 24px; margin-bottom: 16px; }
+.det-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.det-titles { min-width: 0; }
+/* 기관/근무지 2줄 헤더 — 5곳 통일: 기관 13/500, 근무지 21/800, lh 1.2, 두 줄 간격 2px */
+.det-org { font-size: 13px; font-weight: 500; line-height: 1.2; color: var(--text-sub); margin-bottom: 2px; }
+.det-name { font-size: 21px; font-weight: 800; line-height: 1.2; margin-bottom: 4px; }
+.info-row { display: flex; padding: 8px 0; border-bottom: 1px solid var(--surface); font-size: 13px; }
+.info-row:last-child { border-bottom: none; }
+.info-lbl { color: var(--text-muted); width: 100px; flex-shrink: 0; }
+.info-row > span:last-child { min-width: 0; overflow-wrap: anywhere; }
+.btn-apply { width: 100%; background: var(--primary); color: white; border: none; padding: 11px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 14px; font-family: inherit; }
+.btn-apply:disabled { background: var(--border); color: var(--text-sub); cursor: default; }
+.btn-apply:hover:not(:disabled) { opacity: 0.88; }
+
+/* ── SUMMARY CARD ── */
+.summary-card { background: white; border: 1px solid var(--border); border-radius: var(--card-radius); padding: 20px 24px 12px; }
+.overall { text-align: center; margin-bottom: 10px; }
+.overall-num { font-size: 44px; font-weight: 800; color: var(--primary-dark); line-height: 1; }
+.overall-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.sum-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.sum-lbl { font-size: 15px; color: var(--text-sub); width: 82px; flex-shrink: 0; white-space: nowrap; }
+.sum-track { flex: 1; height: 10.4px; background: var(--surface); border-radius: 5px; overflow: hidden; }
+.sum-fill { height: 100%; border-radius: 5px; }
+.sum-val { font-size: 15px; font-weight: 700; width: 28px; text-align: right; }
+.fill-blue { background: var(--primary); }
+.fill-yellow { background: var(--warn); }
+.fill-red { background: var(--danger); }
+
+/* ── LOCKED SUMMARY ── */
+/* .score-mask/.sum-val/.overall-num/.sum-fill 마스킹 규칙 제거 — 잠금 시 세부 점수를 아예 렌더하지
+   않으므로(ScoreSummary publicOnly) 가릴 대상이 없다. 예전엔 실점수를 넣고 이 CSS로만 덮었음(debt#3). */
+.locked-summary .public-rec {
+  text-align: center;
+  margin-bottom: 14px;
+  color: var(--text-sub);
+  font-size: 13px;
+}
+.locked-summary .public-rec strong { color: var(--primary-dark); }
+
+/* ── REVIEW BLUR / UNLOCK ── */
+/* 잠금(비로그인·무열람권) 리뷰 영역 — 서버가 준 '첫 줄' 티저 + 해제 CTA.
+   예전 .review-blur-* (리뷰카드 2장 렌더 후 CSS 블러)는 제거 — 전문이 DOM에 남던 debt#3의 본체였음. */
+.review-teaser { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px 0; overflow: hidden; }
+.review-teaser-head { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
+/* 티저는 서버에서 60자로 잘려 오므로 줄 수 제한 불필요 — 길어야 두 줄 */
+.review-teaser-text { margin: 0; font-size: 15px; line-height: 1.6; color: var(--text); word-break: break-word; }
+
+/* 첫 줄 아래: 블러 처리된 CSS 도형 + 그 위에 해제 안내.
+   .review-locked-fill의 span은 '리뷰가 이어진다'는 인상만 주는 빈 막대 — 텍스트가 아니다.
+   min-height는 unlock-box(≈110px)가 들어갈 자리 확보용. */
+.review-locked-rest { position: relative; margin-top: 14px; }
+.review-locked-fill { filter: blur(6px); user-select: none; pointer-events: none; padding-bottom: 16px; }
+.rlf-card { border-top: 1px solid var(--border); padding: 16px 2px 4px; }
+.rlf-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+/* 색이 있어야 블러가 '리뷰'로 읽힌다 — 추천점수(파랑)·별점(노랑)이 실제 카드의 시각적 앵커 */
+.rlf-num { width: 30px; height: 20px; border-radius: 4px; background: var(--primary); opacity: 0.45; }
+.rlf-stars { width: 78px; height: 15px; border-radius: 3px; background: var(--warn); opacity: 0.5; }
+.rlf-who { width: 62px; height: 13px; border-radius: 3px; background: var(--border); margin-left: auto; }
+.rlf-scores { display: flex; gap: 10px; margin-bottom: 14px; }
+.rlf-scores span { flex: 1; height: 11px; border-radius: 3px; background: var(--primary-light); }
+.rlf-line { height: 12px; border-radius: 4px; background: var(--border); margin-bottom: 9px; }
+.rlf-w95 { width: 95%; }
+.rlf-w78 { width: 78%; }
+/* 스크림은 옅게 — 진하면 블러가 하얗게 날아가 '빈 카드'로 보인다(가릴 게 있어 보여야 함).
+   가독성은 unlock-box 자체의 흰 배경+그림자가 책임진다. */
+.review-locked-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.72) 100%);
+}
+.unlock-box { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 24px 28px; text-align: center; box-shadow: 0 4px 24px rgba(0,0,0,0.10); }
+.unlock-box .lock-icon { font-size: 28px; margin-bottom: 8px; color: var(--accent-deep); line-height: 0; }
+.unlock-box .lock-icon svg { display: inline-block; }
+.unlock-box p { font-size: 14px; color: var(--text-sub); margin: 0 0 14px; line-height: 1.5; }
+.unlock-box .btn-unlock { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+.unlock-box .btn-unlock:hover { opacity: 0.88; }
+
+/* 비로그인 공개(soft-wall): 리뷰 자리 로그인 유도 */
+.review-login-prompt { text-align: center; padding: 32px 20px; color: var(--text-sub); }
+.review-login-prompt p { margin: 0 0 12px; font-size: 14px; }
+.review-login-prompt .btn-unlock { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+.review-login-prompt .btn-unlock:hover { opacity: 0.88; }
+
+/* ── REVIEW HEAD ── */
+.review-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.review-head h3 { font-size: 15px; font-weight: 700; }
+.btn-review-write { margin-top: 8px; padding: 4px 10px; font-size: clamp(9.5px, 1.39vw, 11px); font-weight: 600; color: var(--primary-dark); background: white; border: 1.5px solid var(--primary); border-radius: 6px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+.btn-review-write:hover { background: var(--primary-light); }
+.review-head .btn-review-write { padding: 8px 20px; font-size: 13px; border-radius: 8px; margin-top: 0; }
+
+/* ── REVIEW CARD ── */
+.review-card { background: white; border: 1px solid var(--border); border-radius: var(--card-radius); padding: 18px clamp(14px, calc(12vw - 28px), 20px); margin-bottom: 10px; }
+.rev-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }
+.rev-head-left { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.rev-head-right { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; text-align: right; flex-shrink: 0; }
+.rev-who-line { display: flex; align-items: center; gap: 6px; }
+.rev-who { font-size: 16px; font-weight: 700; color: var(--text); }
+.rev-anon-tag { font-size: 12px; font-weight: 600; color: var(--text-muted); background: var(--surface); border-radius: 6px; padding: 2px 7px; }
+.rev-meta-sub { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; }
+.rev-period { font-size: 14px; font-weight: 700; color: var(--text-sub); background: var(--surface); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
+.rev-date { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+.rev-rec { display: inline-flex; align-items: center; gap: 7px; font-size: 15px; font-weight: 700; color: var(--text); white-space: nowrap; }
+.rev-rec-num { font-size: 21px; font-weight: 800; }
+.rev-stars { font-size: 21px; letter-spacing: 2px; }
+.rev-stars .star-on { color: var(--accent); }
+/* 반개(0.5점) = 속 빈 별. 채운 별과 같은 강조색이라 '0점(회색 채운 별)'과 확실히 구분된다 */
+.rev-stars .star-half { color: var(--accent); }
+.rev-stars .star-off { color: var(--border-strong); }
+.rev-scores { display: flex; gap: 6px clamp(4px, calc(8.42vw - 27.57px), 12px); flex-wrap: wrap; }
+.rev-score { display: inline-flex; align-items: center; gap: 5px; font-size: clamp(12px, calc(3.16vw + 0.15px), 15px); font-weight: 700; color: var(--text); }
+.rev-score-num { font-size: clamp(18px, calc(3.16vw + 6.15px), 21px); font-weight: 800; }
+.sc-blue { color: var(--primary); }
+.sc-yellow { color: var(--warn); }
+.sc-red { color: var(--danger); }
+.rev-section { margin-bottom: 7px; }
+.rev-section-label { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.rev-section-text { font-size: 16px; color: var(--text-sub); line-height: 1.45; overflow-wrap: anywhere; white-space: pre-wrap; }
+.rev-actions { display: flex; align-items: center; gap: 8px; }
+.btn-helpful { display: inline-flex; align-items: center; gap: 5px; height: 30px; box-sizing: border-box; background: transparent; border: 1px solid var(--border); color: var(--text-sub); padding: 0 14px; border-radius: 20px; font-size: 13px; cursor: pointer; font-family: inherit; }
+.btn-helpful:hover { border-color: var(--primary-dark); color: var(--primary-dark); }
+.btn-report { background: transparent; border: none; color: var(--text-muted); font-size: 13px; cursor: pointer; font-family: inherit; }
+.btn-edit-review { background: transparent; border: 1px solid var(--primary-mid); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+.btn-edit-review:hover { background: var(--primary-light); }
+.btn-delete-review { background: transparent; border: 1px solid var(--danger-mid); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+.btn-delete-review:hover { background: var(--danger-light); }
+
+/* ── RESPONSIVE: 상세 2단 → 1단 ── */
+@media (max-width: 768px) {
+  .detail-wrap { grid-template-columns: 1fr; padding: 16px var(--container-pad); gap: 16px; }
+}
+
+/* 769~930px(2열이 좁아지는 구간): 리뷰 카드 우측 작성자·날짜 숨김(점수만 노출). ≤768은 1열 스택이라 그대로 노출 */
+@media (min-width: 769px) and (max-width: 930px) {
+  .rev-head-right { display: none; }
+}
+
+/* ≤590px(좁은 모바일): 1열 스택에서도 작성자·날짜 숨김(점수·본문만) */
+@media (max-width: 590px) {
+  .rev-head-right { display: none; }
+}
+
+/* <400px(아주 좁은 폭): 별점 숨김 — 추천점수 숫자만 남겨 rev-rec 가로 폭 축소 */
+@media (max-width: 399.98px) {
+  .rev-stars { display: none; }
+  .rev-score { gap: 4.5px; font-size: clamp(10.8px, calc(2.4vw + 2.4px), 12px); }
+  .rev-score-num { font-size: clamp(16.2px, calc(3.6vw + 3.6px), 18px); }
+}

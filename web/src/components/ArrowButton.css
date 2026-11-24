@@ -1,0 +1,20 @@
+/* 화살표 진행 버튼. --primary 미정의 페이지에서도 깨지지 않도록 fallback 색 지정. */
+.btn-arrow {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary, #4392F1);
+  color: white;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.btn-arrow:hover { filter: brightness(1.08); }
+/* 라벨 텍스트는 기본 숨김 — 와이드 변형을 쓰는 곳에서만 CSS로 노출 */
+.btn-arrow .btn-arrow-label { display: none; font-size: 15px; font-weight: 700; font-family: inherit; }
+/* disabled 는 클릭만 막고 시각 변화 없음 — 짧은 비동기(check) 중 깜빡임 방지 */
+.btn-arrow:disabled { cursor: default; }

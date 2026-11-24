@@ -1,0 +1,66 @@
+@keyframes adv-slide-down {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.adv-search {
+  max-width: 660px; margin: 12px auto 0; display: flex; flex-direction: column; gap: 12px;
+  animation: adv-slide-down 0.24s ease;
+}
+.adv-row { display: grid; grid-template-columns: 96px 1fr; gap: 10px; align-items: start; }
+/* 라벨 = 진한 제목(회색 칩과 구분) · 우측정렬로 칩 가까이 · 세로 구분선 · 줄바꿈 금지(칸은 제일 긴 라벨에 맞춤) */
+.adv-label {
+  font-size: 18px; font-weight: 700; color: var(--text); min-height: 30px; white-space: nowrap;
+  display: flex; align-items: center; justify-content: flex-end; gap: 4px; position: relative;
+  padding-right: 10px; border-right: 1px solid var(--border);
+}
+.adv-opts { display: flex; flex-wrap: wrap; gap: 8px; }
+/* 칩 기본 = 중립(회색). 색=의미: '선택'해야 브랜드색(파랑)으로 켜짐 → 고른 게 한눈에 튄다. */
+.adv-chip {
+  background: var(--card); border: 1px solid var(--border); color: var(--text-sub);
+  padding: 6px 13px; border-radius: 16px; font-size: 16px; cursor: pointer; font-family: inherit;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.adv-chip:hover { background: var(--surface); border-color: var(--border-strong); }
+.adv-chip.on { background: var(--primary); border-color: var(--primary); color: white; }
+.adv-chip.on:hover { filter: brightness(1.05); background: var(--primary); }
+.adv-chip:focus:not(:focus-visible) { background: var(--card); border-color: var(--border); }
+.adv-chip.on:focus:not(:focus-visible) { background: var(--primary); border-color: var(--primary); color: white; }
+/* 준비중(선택 불가) — 흐리게·클릭 불가 (어포던스: 못 누르는 건 안 눌려 보이게) */
+.adv-chip:disabled { background: var(--surface); border-color: var(--border); color: var(--text-muted); cursor: default; }
+.adv-chip:disabled:hover { background: var(--surface); border-color: var(--border); }
+
+/* 지역 (?) 말풍선 */
+.adv-hint { position: relative; display: inline-flex; }
+.adv-hint-btn {
+  width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--border-strong);
+  background: white; color: var(--text-muted); font-size: 11px; line-height: 1; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; padding: 0; font-family: inherit;
+}
+.adv-hint-btn:focus:not(:focus-visible) { background: white; }
+.adv-hint-pop {
+  position: absolute; top: 22px; left: 0; z-index: 30; width: max-content; max-width: min(280px, calc(100vw - 32px));
+  background: var(--text); color: white; font-size: 14px; font-weight: 400;
+  line-height: 1.5; text-align: left; white-space: normal; word-break: keep-all;
+  padding: 8px 10px; border-radius: 8px; box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+}
+
+.adv-actions { display: flex; justify-content: center; gap: 10px; margin-top: 6px; }
+.adv-apply {
+  background: var(--primary); border: 1px solid var(--primary); color: white;
+  padding: 6px 16px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; font-family: inherit;
+}
+.adv-apply:hover { filter: brightness(1.05); }
+.adv-reset {
+  background: transparent; border: 1px solid var(--border-strong); color: var(--text-sub);
+  padding: 6px 12px; border-radius: 8px; font-size: 16px; cursor: pointer; font-family: inherit;
+}
+.adv-reset:hover { background: var(--surface); }
+.adv-reset:focus:not(:focus-visible) { background: transparent; }
+
+@media (max-width: 768px) {
+  /* 라벨이 칩 위로 쌓이는 1열 → 좌측정렬·세로 구분선 제거 + "?"는 라벨(지역) 오른쪽으로(order) */
+  .adv-row { grid-template-columns: 1fr; gap: 4px; }
+  .adv-label { justify-content: flex-start; border-right: 0; padding-right: 0; min-height: 0; }
+  .adv-hint { order: 1; }
+}

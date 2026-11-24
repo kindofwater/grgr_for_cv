@@ -1,0 +1,50 @@
+/* 계정 드롭다운. pill 기본 스타일은 Navbar.css의 .user-pill 재사용(Navbar 안에서 렌더되므로 로드됨). */
+.acct { position: relative; display: inline-flex; margin-right: 10px; }
+
+.user-pill.acct-open { filter: brightness(0.95); }
+
+.acct-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 138px;   /* 좌우 10%씩 축소(172→138) — 화면 끝 잘림 완화. 중앙 정렬 유지 */
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-md);
+  padding: 8px;
+  z-index: 1100;
+  font-family: var(--sans);
+  text-align: center;
+}
+
+.acct-wallet { padding: 8px 10px 0; } /* 하단 0: 열람 영역↔메뉴 구분선 간격을 위쪽과 대칭으로 */
+.acct-row { display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 14px; color: var(--text-sub); cursor: pointer; border-radius: 8px; padding: 3px 6px; }
+.acct-row:hover { background: var(--surface); }
+.acct-row strong { color: var(--primary-dark); font-size: 14px; }
+.acct-pass { margin-top: 0; text-align: center; }
+.acct-pass-on { font-size: 14px; color: var(--text-sub); line-height: 1.45; }
+.acct-pass-date { color: var(--text); font-weight: 600; }
+.acct-pass-btns { display: flex; flex-direction: column; gap: 5px; align-items: center; }
+.acct-pass-row { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-sub); }
+/* 마이페이지 .mw-use 와 동일한 작은 아웃라인 '사용' 버튼 */
+.acct-use {
+  font-size: 10px; font-weight: 700; padding: 3px 6px; border-radius: 5px; cursor: pointer; font-family: inherit;
+  line-height: 1; border: 1px solid var(--primary-mid); background: transparent; color: var(--primary-dark);
+}
+.acct-use:disabled { opacity: 0.4; cursor: default; }
+
+.acct-div { height: 1px; background: var(--border); margin: 6px 0; }
+.acct-div-inset { margin: 6px -10px; } /* acct-wallet 좌우 패딩(10px) 상쇄 → 다른 구분선과 폭 일치 */
+
+.acct-item {
+  display: block; width: 100%; text-align: center;
+  padding: 9px 10px; border: none; background: none; border-radius: 8px;
+  font-size: 14px; color: var(--text); cursor: pointer; font-family: inherit;
+}
+.acct-item:hover { background: var(--surface); }
+.acct-item:focus:not(:focus-visible) { background: none; }
+/* 로그아웃 — 되돌릴 수 있는 행동이라 위험색(빨강)을 쓰지 않는다.
+   빨강은 리뷰 삭제·회원 탈퇴처럼 '되돌릴 수 없는 상실'에만. (모달 intent 규칙과 일치) */
+.acct-logout { color: var(--text-sub); }

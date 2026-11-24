@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>근로고래 발표자료</title>
+<style>
+  @page { size: 338.67mm 190.5mm; margin: 0; }   /* 16:9 가로 */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; color: #1a2333; }
+
+  .slide {
+    width: 338.67mm; height: 190.5mm;
+    page-break-after: always;
+    position: relative;
+    padding: 22mm 26mm;
+    background: #fff;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .slide:last-child { page-break-after: avoid; }
+
+  /* 공통 장식 — 하단 물결 띠 */
+  .wave { position: absolute; left: 0; right: 0; bottom: 0; height: 9mm; background: linear-gradient(90deg, #4392F1, #1F75DD); }
+  .pageno { position: absolute; right: 10mm; bottom: 12mm; font-size: 11pt; color: #9aa7ba; }
+
+  /* 큰 글씨 전용 슬라이드 (표지·시연·느낀점·감사) */
+  .big { justify-content: center; align-items: center; text-align: center; }
+  .big .title  { font-size: 76pt; font-weight: 800; color: #143F77; letter-spacing: -1px; }
+  .big .sub    { font-size: 22pt; color: #55677f; margin-top: 12mm; font-weight: 600; }
+  .big .whale  { font-size: 44pt; margin-bottom: 8mm; }
+
+  /* 내용 슬라이드 */
+  h2.head { font-size: 30pt; font-weight: 800; color: #143F77; margin-bottom: 4mm; }
+  h2.head .accent { color: #4392F1; }
+  .rule { width: 34mm; height: 2.2mm; background: #4392F1; border-radius: 2mm; margin-bottom: 9mm; }
+
+  .cols { display: flex; gap: 10mm; flex: 1; min-height: 0; }
+  .col  { flex: 1; min-width: 0; }
+
+  .card { background: #F5F9FF; border: 1px solid #D5E8FC; border-radius: 5mm; padding: 8mm 9mm; margin-bottom: 7mm; }
+  .card h3 { font-size: 17pt; color: #1F75DD; margin-bottom: 4mm; }
+  .card ul { list-style: none; }
+  .card li { font-size: 13.5pt; line-height: 1.65; padding-left: 7mm; position: relative; }
+  .card li::before { content: '·'; position: absolute; left: 1.5mm; color: #4392F1; font-weight: 800; }
+  .card li b { color: #143F77; }
+
+  /* 역할 분담 카드 */
+  .people { display: flex; gap: 9mm; flex: 1; align-items: stretch; }
+  .person { flex: 1; background: #F5F9FF; border: 1px solid #D5E8FC; border-radius: 6mm; padding: 10mm 9mm; display: flex; flex-direction: column; }
+  .person.lead { background: #EAF3FE; border-color: #B7D6FA; }
+  .person .name { font-size: 24pt; font-weight: 800; color: #143F77; }
+  .person .tag  { font-size: 12pt; color: #4392F1; font-weight: 700; margin: 1.5mm 0 6mm; }
+  .person ul { list-style: none; }
+  .person li { font-size: 14pt; line-height: 1.75; padding-left: 6.5mm; position: relative; }
+  .person li::before { content: '·'; position: absolute; left: 1mm; color: #4392F1; font-weight: 800; }
+
+  /* 통계 줄 */
+  .stats { display: flex; gap: 8mm; margin-top: auto; }
+  .stat { flex: 1; text-align: center; background: #EAF3FE; border-radius: 5mm; padding: 6mm 2mm; }
+  .stat .num { font-size: 27pt; font-weight: 800; color: #1F75DD; }
+  .stat .lbl { font-size: 11.5pt; color: #55677f; margin-top: 1mm; }
+
+  /* 스크린샷 자리 */
+  .shot { flex: 1; border: 2px dashed #B7D6FA; border-radius: 5mm; background: #FAFCFF;
+          display: flex; align-items: center; justify-content: center; color: #9db8d9;
+          font-size: 15pt; font-weight: 700; min-height: 0; }
+  .shot-row { display: flex; gap: 8mm; flex: 1; min-height: 0; }
+
+  .feature-note { font-size: 13pt; color: #55677f; line-height: 1.7; margin-bottom: 6mm; }
+  .feature-note b { color: #143F77; }
+</style>
+</head>
+<body>
+
+<!-- 1. 표지 — 이름·디자인·초기 구상 (발표자 구두 설명) -->
+<div class="slide big">
+  <div class="whale">🐋</div>
+  <div class="title">근로고래</div>
+  <div class="sub">이름 · 디자인 · 초기 구상</div>
+  <div class="wave"></div>
+</div>
+
+<!-- 2-1. MVP 한눈에 -->
+<div class="slide">
+  <h2 class="head">MVP — <span class="accent">근로장학생을 위한 근무지 리뷰·추천 서비스</span></h2>
+  <div class="rule"></div>
+  <div class="cols">
+    <div class="col">
+      <div class="card">
+        <h3>무엇을 만들었나</h3>
+        <ul>
+          <li>전국 <b>근로장학 근무지 6,700+</b>를 검색·비교하는 웹서비스 (grgr.kr)</li>
+          <li>실제 근무 경험 <b>리뷰 5개 항목 별점</b>(업무량·자기계발·분위기·시간유연성·추천)</li>
+          <li><b>포인트 · 열람권 경제</b> — 리뷰 쓰면 적립, 열람권으로 리뷰 열람</li>
+          <li>광고 시청 리워드 · 공지 · 마이페이지 · 회원탈퇴까지 <b>서비스 전체 사이클</b></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>어떻게 만들었나</h3>
+        <ul>
+          <li><b>React + Vite</b> 프론트 · <b>Supabase</b>(Postgres · Auth · RLS)</li>
+          <li>별도 백엔드 서버 없이 <b>RPC + Row Level Security</b>로 보안</li>
+          <li><b>Cloudflare Pages</b> 자동배포 (main=개발 / prod=실서비스)</li>
+          <li>장학재단·학교 포털 <b>크롤러</b>로 근무지 데이터 적재</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col" style="display:flex; flex-direction:column;">
+      <div class="shot">홈 화면 스크린샷 자리</div>
+      <div class="stats">
+        <div class="stat"><div class="num">6,700+</div><div class="lbl">근무지 데이터</div></div>
+        <div class="stat"><div class="num">47</div><div class="lbl">DB 마이그레이션</div></div>
+        <div class="stat"><div class="num">130</div><div class="lbl">자동화 테스트</div></div>
+        <div class="stat"><div class="num">2</div><div class="lbl">지원 대학 (고려대·서울대)</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="pageno">2</div>
+  <div class="wave"></div>
+</div>
+
+<!-- 2-2. 역할 분담 -->
+<div class="slide">
+  <h2 class="head">역할 분담</h2>
+  <div class="rule"></div>
+  <div class="people">
+    <div class="person">
+      <div class="name">현수</div>
+      <div class="tag">로그인 · 근장찾기</div>
+      <ul>
+        <li>로그인 · 회원가입 화면</li>
+        <li>이메일 인증 파이프라인</li>
+        <li>근장찾기 <b>고급검색</b> (유형·지역·기간·자격 필터)</li>
+        <li>프로필 드롭다운 · 반응형</li>
+      </ul>
+    </div>
+    <div class="person">
+      <div class="name">유진</div>
+      <div class="tag">리뷰 쓰기</div>
+      <ul>
+        <li>리뷰 작성·수정 폼</li>
+        <li>5개 항목 별점 · 익명 옵션</li>
+        <li>개인정보 처리방침 작성</li>
+      </ul>
+    </div>
+    <div class="person lead">
+      <div class="name">경록 <span style="font-size:13pt; color:#4392F1;">(PM)</span></div>
+      <div class="tag">홈 · 교환센터 · 근장상세 · 그 외 대부분</div>
+      <ul>
+        <li>홈 · 근장상세 · 교환센터 · 마이페이지</li>
+        <li>DB 설계 · RLS 보안 · 47개 마이그레이션</li>
+        <li>포인트/열람권 경제 · 광고 리워드 서버</li>
+        <li>크롤러 · 데이터 시드 · 배포 · 법무 문서</li>
+      </ul>
+    </div>
+  </div>
+  <div class="pageno">3</div>
+  <div class="wave"></div>
+</div>
+
+<!-- 2-3. 기능: 로그인 · 근장찾기 (현수) -->
+<div class="slide">
+  <h2 class="head">로그인 · 근장찾기 <span class="accent">— 현수</span></h2>
+  <div class="rule"></div>
+  <div class="feature-note">
+    학교 이메일 <b>OTP 인증</b>으로 가입(고려대·서울대) → 3단계 프로필 마법사.
+    근장찾기는 <b>검색·정렬·페이징 전부 서버 처리</b>, 고급검색 패널로 유형·교내외·지역·근무기간·지원자격을 조합 필터.
+  </div>
+  <div class="shot-row">
+    <div class="shot">로그인 화면 스크린샷 자리</div>
+    <div class="shot">근장찾기(고급검색) 스크린샷 자리</div>
+  </div>
+  <div class="pageno">4</div>
+  <div class="wave"></div>
+</div>
+
+<!-- 2-4. 기능: 리뷰 (유진) -->
+<div class="slide">
+  <h2 class="head">리뷰 쓰기 <span class="accent">— 유진</span></h2>
+  <div class="rule"></div>
+  <div class="feature-note">
+    근무 경험을 <b>5개 항목 별점 + 서술</b>로 기록. <b>익명 옵션</b>(닉네임·근로학기 숨김),
+    학기당 1리뷰 제한, 리뷰 작성 시 <b>포인트 적립</b>(일반 15p / 익명 5p) — 삭제·익명 전환 시 차액 회수까지 정책화.
+  </div>
+  <div class="shot-row">
+    <div class="shot">리뷰 작성 폼 스크린샷 자리</div>
+    <div class="shot">리뷰 목록(근장상세) 스크린샷 자리</div>
+  </div>
+  <div class="pageno">5</div>
+  <div class="wave"></div>
+</div>
+
+<!-- 2-5. 기능: 홈 · 근장상세 · 교환센터 (경록) -->
+<div class="slide">
+  <h2 class="head">홈 · 근장상세 · 교환센터 <span class="accent">— 경록</span></h2>
+  <div class="rule"></div>
+  <div class="feature-note">
+    홈은 <b>프로필 기반 맞춤 추천</b> + 비로그인도 둘러보기 개방. 근장상세는 점수 요약·리뷰·공고 정보를 조립.
+    교환센터에서 <b>포인트 ↔ 열람권</b> 교환, 광고 시청(일 2회)으로 적립 — 수익화 실험까지.
+  </div>
+  <div class="shot-row">
+    <div class="shot">홈(맞춤 추천) 스크린샷 자리</div>
+    <div class="shot">근장상세 스크린샷 자리</div>
+    <div class="shot">교환센터 스크린샷 자리</div>
+  </div>
+  <div class="pageno">6</div>
+  <div class="wave"></div>
+</div>
+
+<!-- 3. 시연 -->
+<div class="slide big">
+  <div class="title">웹사이트 시연</div>
+  <div class="sub">grgr.kr</div>
+  <div class="wave"></div>
+</div>
+
+<!-- 4. 느낀점 -->
+<div class="slide big">
+  <div class="title">느낀점</div>
+  <div class="wave"></div>
+</div>
+
+<!-- 5. 감사합니다 -->
+<div class="slide big">
+  <div class="whale">🐋</div>
+  <div class="title">감사합니다</div>
+  <div class="wave"></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+creds.py
+creds_curl.txt
+*.har
+*.xlsx
+.claude/
+.tools/
+.venv/
+.pytest*/
+.test-tmp*/
+.kupid_playwright_profile/
+__pycache__/
+*.pyc
+debug_*.html
+debug_*.txt
+kupid_*_notices.csv
+kupid_*_notices.json
+kupid_last_crawl.json
+ssc_*.json
+.ssc_playwright_profile/
+crawling_scripts/daily_log.txt
+crawling_scripts/daily_success_date.txt
+crawling_scripts/logs/
+# data/ 는 크롤러 런타임 산출물 전용(추적 중인 파일 0건) — 통째로 제외한다.
+# 개별 패턴만 적어두니 새 산출물이 생길 때마다 untracked 노이즈로 쌓였다.
+# ⚠️ 여기에 의도적으로 커밋할 파일이 생기면 `git add -f` 하거나 `!data/그파일` 예외를 추가할 것.
+/data/
+
+# Supabase CLI가 저장소 루트에서 실행될 때 만드는 스크래치(.temp/cli-latest 등).
+# ⚠️ 반드시 앞에 `/` — `supabase/`로 적으면 하위 경로도 매칭돼 **정본인 web/supabase/ 전체가 제외된다.**
+/supabase/
+*_parsed.csv
+*_parsed_excel.xml
+temp_check.csv
+~$*.xlsx
+/????????-????-????-????-????????????.png
+.gstack/

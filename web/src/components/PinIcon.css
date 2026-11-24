@@ -1,0 +1,2 @@
+/* 고정(공지) 압정 아이콘 — 색은 여기 한 곳에서 관리 (빨강 X, 톤 맞춘 회색) */
+.pin-icon { color: var(--text-sub); margin-right: 4px; vertical-align: -2px; flex: 0 0 auto; }

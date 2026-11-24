@@ -1,0 +1,46 @@
+/* 전역 푸터 — index.css 토큰만 참조(:root 재정의 금지). */
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--card);
+  margin-top: auto;          /* #root flex column에서 짧은 페이지여도 하단에 고정 */
+}
+
+.site-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  flex-wrap: wrap;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.site-footer-links {
+  display: flex;
+  align-items: center;
+  /* 400px→360px 구간에서 10px→5px로 매끄럽게 축소(양 끝 고정, 미디어쿼리식 점프 없음) */
+  gap: clamp(5px, calc(12.5vw - 40px), 10px);
+}
+
+.site-footer-links a {
+  color: var(--text-sub);
+  /* 400px→360px 구간에서 14px→12px로 매끄럽게 축소 */
+  font-size: clamp(12px, calc(5vw - 6px), 14px);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.site-footer-links a:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+.site-footer-sep {
+  color: var(--border-strong);
+  font-size: 13px;
+}
+
+.site-footer-copy {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+/* 항상 가운데 정렬(데스크톱·모바일 동일) — 간격·글자 축소는 clamp()로 유동 처리(위 참조) */

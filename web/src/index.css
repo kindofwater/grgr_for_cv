@@ -1,0 +1,229 @@
+/* ──────────────────────────────────────────────────────────────
+   디자인 토큰 단일 소스 (mockup 팔레트 기준).
+   ⚠️ 페이지/컴포넌트 css는 :root를 다시 정의하지 말고 여기 변수만 var()로 참조한다.
+   ────────────────────────────────────────────────────────────── */
+:root {
+  /* 브랜드(파랑) — 주요 액션·포인트·링크·활성상태 */
+  --primary:       #4392F1;
+  --primary-light: #EAF3FE;
+  --primary-mid:   #B7D6FA;
+  --primary-faint: #D5E8FC;
+  --primary-dark:  #1F75DD;
+  --primary-deep:  #143F77;
+
+  /* 강조(금색) — 적립/리워드: 광고 시청, 열람권 "사용" 버튼 */
+  --accent:        #FAA916;
+  --accent-light:  #FEF4DA;
+  --accent-mid:    #FCDB87;
+  --accent-deep:   #A66C0A;
+  /* ⚠️ DEPRECATED 별칭 — App.css(Vite 스캐폴드)만 사용. 새 코드에선 쓰지 말 것.
+     App.css 정리 후 이 두 줄은 제거 예정. */
+  --accent-bg:     var(--accent-light);
+  --accent-border: var(--accent-mid);
+
+  /* 텍스트 */
+  --text:       #272932;
+  --text-h:     #08060d;   /* 더 진한 헤딩용 (index 고유) */
+  --text-sub:   #5B5D67;
+  --text-muted: #9598A0;
+
+  /* 면/경계 */
+  --bg:            #F6F8FB;
+  --surface:       #EEF1F5;
+  --card:          #FFFFFF;
+  --border:        #E1E5EB;
+  --border-strong: #C5CBD4;
+
+  /* 상태색 */
+  --good:         #3CA171;
+  --warn:         #E89A1F;
+  --danger:       #FF6978;
+  --danger-light: #FFE9EC;
+  --danger-mid:   #FFB8C0;
+
+  /* 회원가입 진행 바 초록 (원색 유지) — 추후 --good 등으로 정리 검토 (담당: kindofwater) */
+  --progress:     #22C55E;
+
+  /* 공지 배지 — 색 정책 미정(추후 결정). 일단 기존 토큰 별칭. */
+  --notice-pin-bg:    var(--primary-light);
+  --notice-pin-fg:    var(--primary-dark);
+  --notice-badge-bg:  var(--surface);
+  --notice-badge-fg:  var(--text-sub);
+
+  /* 그림자 */
+  --shadow-sm: 0 1px 2px rgba(39, 41, 50, 0.04);
+  --shadow-md: 0 6px 18px rgba(39, 41, 50, 0.06);
+  --shadow-card: 0 4px 12px rgba(39, 41, 50, 0.09);   /* 카드·행 hover 공통 그림자 단일 소스(#15 그림자 통일) */
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  /* 기타 (index 고유) */
+  --code-bg:   #f4f3ec;
+  --social-bg: rgba(244, 243, 236, 0.5);
+  --skeleton-base:  #ebebeb;
+  --skeleton-shine: #f5f5f5;
+
+  /* 레이아웃 — 전 페이지 공용 컨테이너 폭 (navbar 안쪽 + 각 페이지 wrap 공통).
+     좌우 정렬의 단일 소스: 이 값만 바꾸면 내비·모든 페이지가 함께 움직인다. */
+  --container:     1080px;   /* 콘텐츠 전체 폭(좌우 여백 ↑). 이 값만 바꾸면 navbar+전 페이지 동시 반영 */
+  --container-narrow: 900px; /* 좁은 콘텐츠 폭 — 마이페이지·교환센터·공지·근장찾기 본문에만 적용(navbar·홈·상세는 --container 유지) */
+  /* 좌우 패딩 — 폭에 따라 매끈하게 유동(16~40px). 768 같은 브레이크포인트에서 뚝 끊기지 않음.
+     곡선: 뷰포트 ~682px(16px) → ~960px(40px) 선형 보간 후 양끝 고정 (Search·ReviewForm의 유동 패딩과 동일 곡선).
+     navbar·전 페이지 콘텐츠가 이 토큰을 공유하므로 한 곳만 바꾸면 같이 움직이고 좌우 정렬도 유지된다. */
+  --container-pad: clamp(16px, calc(8.63vw - 42.9px), 40px);
+  --nav-h:         56px;   /* 상단 navbar 높이 (모바일 52px) — 페이지 min-height 계산에 사용 */
+  --card-radius:   8px;    /* 전 카드·카드형 패널 공통 모서리(전역 토큰). 이 값만 바꾸면 모든 카드 반영 */
+
+  /* 모달 — 폭 3종 + 스크림 단일 소스 (components/Modal.css가 참조).
+     폭은 콘텐츠 성격으로 나눈다: 짧은 문답=sm, 리스트·입력이 있는 것=md, 광고=lg.
+     스크림은 하나뿐 — 중첩 모달(광고 위 경고)은 같은 스크림이 두 겹 쌓여 저절로 더 어두워진다. */
+  --modal-w-xs: 240px;   /* 짧은 단문 확인(로그아웃·삭제·교환·익명수정) — ConfirmModal이 길이로 자동 선택 */
+  --modal-w-sm: 280px;   /* 설명 붙은 긴 확인(사용·환불·익명제출) · 로그인 유도 · 광고 경고 */
+  --modal-w-md: 400px;   /* 신고 · 탈퇴 */
+  --modal-w-lg: 420px;   /* 광고 */
+  --scrim: rgba(8, 6, 13, 0.5);   /* = --text-h(#08060d) 계열. 순검정보다 팔레트와 맞는다 */
+
+  /* 레이어 순서(z-index) 단일 소스. 기존 값: navbar 1000 · 드롭다운(AccountMenu/Dropdown) 1100.
+     모달은 그 위, 토스트는 모달 위 — 토스트는 모달 안에서 일어난 일(적립 오류 등)을 알리므로
+     모달에 가리면 안 된다. */
+  --z-modal: 1200;
+  --z-toast: 1300;
+
+  /* 폰트 — 전 페이지 동일 스택(단일 소스). pages/components는 var(--sans) 참조 */
+  --sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --heading: var(--sans);
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light;
+  color: var(--text);
+  background: var(--bg);
+  /* 세로 스크롤바 자리를 항상 예약 — 스크롤 유무로 페이지마다 폭/정렬이 달라지는 것 방지
+     (스크롤 있는 페이지와 없는 페이지의 navbar·콘텐츠 가운데정렬이 어긋나던 문제) */
+  scrollbar-gutter: stable;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 모달 열릴 때 화면 좌측 밀림 방지.
+   위 scrollbar-gutter:stable이 스크롤바 자리를 이미 예약하는데, 모달이 뜨면 Radix 스크롤락
+   (react-remove-scroll)이 스크롤바 폭만큼 margin/padding-right를 !important로 또 더한다 → 이중 보정.
+   gutter가 처리하므로 그 보정을 0으로 상쇄한다. (html 접두사 = 특이도 우위, 런타임 주입 규칙보다 늦어도 이김) */
+html body[data-scroll-locked] {
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* 모바일은 navbar 높이만 축소 — 좌우 패딩(--container-pad)은 위에서 폭에 따라 유동이라 768 계단 없음 */
+@media (max-width: 768px) {
+  :root { --nav-h: 52px; }
+}
+
+/* 전 페이지 공용 중앙 컨테이너 (navbar 안쪽·페이지 콘텐츠 공통).
+   좌우 정렬을 한곳에서 통제 — 페이지 wrap은 이 클래스를 쓰거나 max-width:var(--container)를 참조. */
+.gr-container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+  box-sizing: border-box;
+}
+
+/* ── 스켈레톤 shimmer ── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton-box {
+  background: linear-gradient(90deg,
+    var(--skeleton-base) 25%,
+    var(--skeleton-shine) 50%,
+    var(--skeleton-base) 75%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 6px;
+}
+
+/* ── 텍스트 링크형 버튼 (btn-text-link) ──
+   배경·테두리 없음, 액센트(--primary) 색상, 호버 시 밑줄.
+   Login·Signup 등 "회원가입 / 로그인 화면으로" 인라인 안내 버튼에 사용. */
+.btn-text-link {
+  background: none;
+  border: none;
+  padding: 2px 0;
+  color: var(--primary);
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 1.5;
+  transition: opacity 0.15s;
+}
+.btn-text-link:hover { opacity: 0.75; }
+
+body {
+  margin: 0;
+  /* 앱 느낌 — 전체 페이지 드래그/텍스트 선택 방지(#1). 실수로 글자 잡히거나 드래그되는 것 차단 */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/* 전역 선택 방지를 자식 요소까지 확실히 적용 */
+#root,
+#root * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/* 전역 선택 방지의 예외 — 입력창은 텍스트 선택 허용(검색·리뷰폼 등) */
+#root input,
+#root textarea,
+#root [contenteditable="true"],
+#root [contenteditable="true"] * {
+  -webkit-user-select: text;
+  user-select: text;
+}
+/* 이미지 드래그(고스트 이미지) 방지 */
+img { -webkit-user-drag: none; }
+
+/* 마우스/터치 클릭 뒤 버튼에 남는 브라우저 포커스 표시는 숨기고,
+   키보드 탐색 포커스만 명확히 남긴다. */
+:where(button, [role="button"]):focus:not(:focus-visible) {
+  outline: none;
+}
+:where(button, [role="button"]):focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+#root {
+  width: 100%;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+p {
+  margin: 0;
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}

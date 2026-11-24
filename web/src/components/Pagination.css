@@ -1,0 +1,8 @@
+/* 공용 페이지네이션 (components/Pagination.jsx). 근장찾기·공지 등에서 공유 */
+.pagination { display: flex; align-items: center; justify-content: center; gap: 4px; padding: 28px 0 40px; }
+.pg-btn { min-width: 36px; height: 36px; padding: 0 6px; border: 1px solid var(--border); background: white; border-radius: 8px; font-size: 14px; font-family: inherit; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.pg-btn:hover { border-color: var(--primary); color: var(--primary); }
+.pg-btn.active { background: var(--primary); border-color: var(--primary); color: white; font-weight: 700; }
+.pg-btn:disabled { color: var(--text-muted); cursor: default; border-color: var(--border); }
+.pg-btn.pg-arrow { font-size: 16px; }
+.pg-ellipsis { min-width: 24px; text-align: center; color: var(--text-muted); user-select: none; }

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA_MEASUREMENT_ID%"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ window.dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', '%VITE_GA_MEASUREMENT_ID%', { send_page_view: false });
+    </script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <meta name="description" content="근로장학생을 위한 근무지 리뷰·추천 서비스 근로고래. 실제 근무 후기로 나에게 맞는 근무지를 찾아보세요." />
+    <!-- Open Graph 링크 미리보기(카카오톡 등) — 스크래퍼가 JS를 안 돌리므로 정적 head에 있어야 함 -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="근로고래" />
+    <meta property="og:title" content="근로고래 — 근로장학생 근무지 리뷰·추천" />
+    <meta property="og:description" content="실제 근무 후기로 나에게 맞는 근무지를 찾아보세요." />
+    <meta property="og:url" content="https://grgr.kr/" />
+    <meta property="og:image" content="https://grgr.kr/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>근로고래</title>
+    <!-- Google AdSense 사이트 소유권 확인용. 광고 게재 코드는 정책 검토가 끝날 때까지 비활성화. -->
+    <meta name="google-adsense-account" content="ca-pub-2107047521899823" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

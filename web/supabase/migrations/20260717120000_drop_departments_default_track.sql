@@ -1,0 +1,11 @@
+-- 목적: departments.default_track 컬럼 제거 — 계열(track)은 프론트 제출값(users.track)이 유일 정본
+-- 날짜: 2026-07-17 · 담당: 배경록
+-- 배경: default_track은 "학과 선택 시 계열 자동 세팅" 구상의 레거시(PM 확인). 실제로는
+--       프론트(가입 3단계·마이페이지 수정)가 자체 계열 드롭다운(PREFFEREDTRACK) 제출값을 보내고,
+--       서버(create_profile/update_profile)는 p_track을 저장만 한다 — 이 컬럼을 읽는 코드가
+--       프론트·SQL 어디에도 없다. 백엔드가 학과별 계열을 따로 들고 있을 이유가 없으므로 제거.
+--       빈 값 방지는 프론트 검증이 담당(가입 3단계 trackErr · MyPage 160행) — 서버 후처리 없음.
+-- ⚠️ 앞선 시드(20260716145738·20260717000000·20260717110000)의 insert는 default_track을
+--       채우는데, db reset 재생 시 이 마이그레이션이 그 뒤에 오므로(타임스탬프順) 문제없다.
+--       이후의 시드/임포터는 departments에 (college_id, name)만 넣으면 된다.
+alter table departments drop column if exists default_track;

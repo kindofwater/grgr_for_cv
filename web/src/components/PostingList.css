@@ -1,0 +1,19 @@
+.posting-list { margin-top: 16px; margin-bottom: 16px; }   /* 점수 요약 카드 아래 배치 — summary-card엔 하단 여백이 없어 위쪽 간격은 여기서 확보 */
+.posting-list-head { font-size: 15px; font-weight: 700; margin: 4px 0 10px; }
+
+.posting-item { background: white; border: 1px solid var(--border); border-radius: var(--card-radius); margin-bottom: 8px; overflow: hidden; }
+/* 접힌 줄 = 요약(flex:1·ellipsis) + 마감일 + 캐럿 한 줄. 날짜는 짧고 flex-shrink:0이라 요약을 짜부라뜨리지 않는다.
+   모집중/완료 상태는 태그 대신 .status-open/.status-closed 좌측 테두리 색이 담당(2026-07-21 결정). */
+.posting-row { display: flex; align-items: center; gap: 10px; width: 100%; background: transparent; border: none; padding: 12px 16px; cursor: pointer; font-family: inherit; text-align: left; }
+.posting-row:hover { background: var(--surface); }
+.posting-row:focus:not(:focus-visible) { background: transparent; }
+.posting-row:focus-visible { outline-offset: -2px; }
+.posting-summary { flex: 1; min-width: 0; font-size: 14px; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.posting-date { flex-shrink: 0; font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+.posting-caret { color: var(--text-muted); font-size: 10px; flex-shrink: 0; }
+.posting-body { padding: 0 16px 16px; }
+
+@media (max-width: 480px) {
+  .posting-row { flex-wrap: wrap; }                        /* 아주 좁으면 날짜가 다음 줄로 — 요약 우선 */
+  .posting-summary { white-space: normal; flex-basis: 100%; }
+}

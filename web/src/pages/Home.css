@@ -1,0 +1,834 @@
+/* 디자인 토큰은 index.css :root 단일 소스 (여기서 재정의하지 않음) */
+
+.home-wrap {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: calc(100svh - var(--nav-h));
+  color-scheme: light;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.home-wrap input,
+.home-wrap button {
+  background: white;
+  color: var(--text);
+}
+
+.home-wrap .user-pill,
+.home-wrap .search-bar-wrap button {
+  background: var(--primary);
+  color: white;
+}
+
+/* navbar 스타일은 components/Navbar.css로 이동 (단일 소스) */
+
+/* 모달 공통 스타일은 components/Modal.css로 이동 (단일 소스) */
+
+.body-wrap {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--container-pad) 48px;   /* 좌우 --container-pad(16~40px 반응형)로 토큰화 — navbar(--container-pad)와 좌우 정렬 일치 + 카드선반 화살표(-16px)가 여백 안에 들어와 좁은 폭 가로넘침 해결. box-sizing은 content-box 유지(navbar가 거기 맞춰 설계됨) */
+}
+
+.home-main {
+  min-width: 0;
+}
+
+/* ── 상단 row: 날바독님께 추천하는 근장 (2곳, 세로) + 공지·광고 (오른쪽) ── */
+.home-toprow {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 8px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+/* .home-toprow 직계 그리드 아이템 2개 — 기본 min-width:auto면 공지 제목(.notice-item p, nowrap)의
+   min-content 폭(제목 전체 길이)에 걸려 축소가 막힘 → 좁은 폭에서 .body-wrap을 뚫고 가로넘침
+   (385px서 scrollWidth 445). 0으로 축소 허용. (.home-main은 toprow의 형제라 무관) */
+.home-rec2 { margin-bottom: 0; min-width: 0; }
+.home-sidebar { min-width: 0; }
+
+.home-rec2-grid {
+  display: grid;
+  grid-template-columns: 1fr;   /* 히어로 추천 1개 — 추천 영역 폭 전체 */
+}
+
+/* 반응형: 좁아지면 1칼럼으로 접어 공지를 추천 아래로.
+   교환센터·마이페이지·근장상세와 동일한 grid-collapse 방식. */
+@media (max-width: 820px) {
+  /* 세로로 쌓일 때 추천↔공지(빨강) 좁게, 공지↔선반(노랑) 넓게 */
+  .home-toprow { grid-template-columns: 1fr; gap: 2px; margin-bottom: 24px; }
+  /* (예전 ≤820에서 .hf-scores-row 아래패딩 22→10 축소했으나 제거 — 고정높이 카드라 그만큼 본문이
+     커져 '게이지 위 간격'이 폭마다 달라지던 문제. 이제 전 폭 아래패딩 22px 통일 = 867px일 때처럼 일정) */
+}
+
+/* ── 근로고래 추천 근장 1곳 (상세 카드) ── */
+.home-featured {
+  min-width: 0;
+  height: 305px;            /* 공지사항 박스와 동일 높이 */
+  box-sizing: border-box;   /* 테두리 포함해 300px가 전체 높이 */
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+  color: inherit;
+  text-decoration: none;
+}
+
+.home-featured:hover { box-shadow: var(--shadow-card); }
+
+/* 비로그인(게스트) 추천 자리 — 특정 근장 대신 로그인 유도. 높이(305px)·테두리는 .home-featured 상속, 내용만 중앙 정렬 */
+.home-featured.is-invite {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  padding: 24px;
+}
+.hf-invite-icon { font-size: 40px; line-height: 1; }
+.hf-invite-title {
+  /* 화면 폭 400px↓부터 350px까지 유동 축소(17→15px), 그 바깥은 고정 */
+  font-size: clamp(15px, calc(15px + (100vw - 350px) * 0.04), 17px);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  max-width: 22em;
+  word-break: keep-all;   /* 한글 어절 단위 줄바꿈 — '요' 한 글자만 넘어가는 어색함 방지 */
+}
+.hf-invite-sub {
+  /* 동일 구간 유동 축소(13.5→12px) */
+  font-size: clamp(12px, calc(12px + (100vw - 350px) * 0.03), 13.5px);
+  color: var(--text-muted);
+  line-height: 1.5;
+  max-width: 26em;
+  word-break: keep-all;
+}
+/* .home-featured 스코프로 특이도(0,2,0)↑ — .home-wrap button 리셋(흰 배경, 0,1,1)을 이겨 채워진 파랑 CTA 유지 */
+.home-featured .hf-invite-btn {
+  margin-top: 6px;
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  color: white;
+  padding: 9px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+.home-featured .hf-invite-btn:hover { filter: brightness(1.08); }
+
+/* 추천카드 모집 상태 배지 — 상세 badge와 같은 톤. 모집완료는 홈 범례처럼 회색 */
+.hf-titlerow { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.hf-titlewrap { flex: 1; min-width: 0; }
+.hf-status { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; flex-shrink: 0; }
+.hf-status.is-open { color: var(--primary-dark); background: var(--primary-light); }
+.hf-status.is-closed { color: var(--text-muted); background: var(--surface); }
+.hf-status-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+.hf-status.is-open .hf-status-dot { background: var(--primary); }
+.hf-status.is-closed .hf-status-dot { background: var(--border-strong); }
+
+/* 카드 안 헤딩 배너 (단색 — 그라데이션 없음) */
+.hf-head {
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  font-size: 18px;            /* 다른 소제목(.section-title)과 동일 */
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  padding: 10px 16px;
+}
+
+.hf-tag {
+  background: linear-gradient(120deg, var(--primary), var(--primary-dark));
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 9px 18px;
+  letter-spacing: -0.01em;
+}
+
+.hf-body {
+  flex: 1;
+  min-height: 0;           /* 고정높이 카드 안에서 body가 줄어들 수 있게 → 코멘트가 점수영역 대신 양보 */
+  overflow: hidden;        /* 넘치는 후기는 잘림(말줄임·1개만 보임) */
+  display: flex;
+  gap: 14px;
+  padding: 14px 16px 4px;
+  align-items: stretch;
+}
+
+.hf-main { flex: 0 0 240px; min-width: 0; }   /* 고정폭(가로 줄어도 안 줄음) → 후기 칸이 대신 줄어듦 */
+
+/* 기관/근무지 2줄 헤더 — 5곳 통일: 기관 13/500, 근무지 21/800, lh 1.2, 두 줄 간격 2px (8px은 태그까지 간격) */
+.hf-org {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text-sub);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hf-name {
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 2px 0 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hf-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+
+/* 오른쪽: 제일 도움된 코멘트 (옛 점수칸 자리) */
+.hf-comment {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;               /* 높이 넘치는 후기는 잘림(2개 중 1개만 보일 수 있음) */
+  border-left: 1px solid var(--border);
+  padding-left: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;   /* 윗정렬 */
+  gap: 8px;                       /* 후기 2개 사이 간격 */
+}
+
+.hf-comment-icon { font-size: 15px; line-height: 1; }   /* 💬 아이콘 — 텍스트와 분리(텍스트가 line-clamp 2줄을 온전히 쓰게) */
+
+.hf-comment-text {
+  font-size: 15px;
+  color: var(--text-sub);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;          /* 후기당 최대 2줄, 넘으면 … 말줄임 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;        /* 긴 무공백 문자열(qfpwoj…)도 강제 줄바꿈 — 안 그러면 1줄로 안 쪼개져 넘침 */
+  word-break: break-word;         /* -webkit-box에서 overflow-wrap만으론 안 쪼개지는 경우 대비(2줄로 확실히) */
+}
+
+.hf-comment-empty { color: var(--text-muted); }
+
+.hf-comment-meta {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hf-comment-count { color: var(--primary-dark); font-weight: 600; }
+
+/* 하단 가로 띠: 평점 + 세부점수 4개 */
+.hf-scores-row {
+  display: flex;
+  align-items: center;     /* 위아래 가운데 정렬 */
+  gap: clamp(24px, calc(4.444vw - 0.44px), 36px);            /* 추천점수↔게이지 간격: ≥820px 36 → 550px 24. 좌우패딩과 동일. ≤550은 아래 미디어쿼리서 24→18로 이어짐 */
+  padding: 14px clamp(24px, calc(4.444vw - 0.44px), 36px) 22px;  /* 상하 비대칭(위14·아래22). 좌우: ≥820px 36 → 550px 24. gap과 동일 taper */
+  border-top: 1px solid var(--surface);
+  flex-shrink: 0;          /* 점수 영역 높이 고정 보호 — 코멘트가 길어도 안 눌림 */
+}
+
+/* ≤550px: 좌우패딩·gap을 24→18px로 이어서 축소(550px 24 → 350px 18, ≤350 18 고정).
+   위 base의 820→550(36→24) taper와 550px에서 24로 연속. 세로(14/22)는 base 유지 */
+@media (max-width: 550px) {
+  .hf-scores-row {
+    gap: clamp(18px, calc(3vw + 7.5px), 24px);
+    padding-left: clamp(18px, calc(3vw + 7.5px), 24px);
+    padding-right: clamp(18px, calc(3vw + 7.5px), 24px);
+  }
+}
+
+/* 평점: 별도 칸, 크게, 게이지(막대) 없음 */
+.hf-rating {
+  flex: 0 0 auto;   /* 폭을 숫자에 맞춤 → "4.3"은 좌측 패딩에 딱(대칭), "추천 점수"는 숫자 아래 가운데(같은 열) */
+  position: relative;
+  top: 1px;         /* 추천점수만 아래로 1px 이동 → 위 여백 +1 / 아래 −1 (게이지는 안 움직임: 레이아웃 밖 시각 이동) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1px;
+}
+.hf-rating-lbl { font-size: 13px; color: var(--text-muted); margin-top: -5px; }   /* 숫자(4.0)와 라벨 사이 간격 좁힘 — 숫자 아래 폰트 여백만큼 라벨을 끌어올림(겹침은 아님) */
+.hf-rating-val {
+  font-size: 46px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* 세부점수 2×2 (점수에 따라 색 — ratingBarColor) */
+/* 근장찾기 .rating-bars / .rb-* 와 동일한 값 그대로 */
+.hf-substats {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.hf-substat { flex: 1; min-width: 70px; display: flex; flex-direction: column; align-items: flex-end; }
+.hf-substat-top {
+  width: 120px;  /* 게이지(120px)와 같은 폭 → 숫자가 게이지 끝과 정렬 */
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 18px;
+  color: var(--text-muted);
+}
+.hf-substat-lbl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hf-substat-val { font-weight: 700; color: var(--text); flex-shrink: 0; }
+.hf-substat-track { display: block; width: 120px; height: 12px; background: var(--surface); border-radius: 5px; overflow: hidden; }
+.hf-substat-fill { display: block; height: 100%; border-radius: 3px; }
+.hf-substat-fill.fill-blue { background: var(--primary); }
+.hf-substat-fill.fill-yellow { background: var(--warn); }
+.hf-substat-fill.fill-red { background: var(--danger); }
+
+/* 추천카드 세부점수 반응형 — 게이지를 점진 축소(120→90px)한 뒤 2×2로 접는다.
+   게이지가 줄어드는 구간에선 게이지 위 숫자줄(.hf-substat-top) 글씨도 18→15px 동반 축소.
+   ┌ 상단(2칼럼 카드) ─ 1100~961: 게이지·글씨 축소 · 960~821: 2×2
+   ├ 하단(1칼럼 풀폭) ─  730~551: 게이지·글씨 축소 · ≤550: 2×2
+   └ 모바일 ────────── 480~350: (2×2 유지) 게이지·글씨 축소 · ≤350 90px/15px 바닥
+   (820~731px는 풀폭 카드가 넓어 4열 120px/18px 유지) */
+
+/* ① 상단 1100~961px — 게이지 120→90px, 글씨 18→15px */
+@media (min-width: 961px) and (max-width: 1100px) {
+  .hf-substat-top,
+  .hf-substat-track { width: clamp(90px, calc(21.58vw - 117.4px), 120px); }
+  .hf-substat-top   { font-size: clamp(15px, calc(2.158vw - 5.74px), 18px); }
+}
+/* ② 하단 730~551px — 게이지 120→90px, 글씨 18→15px */
+@media (min-width: 551px) and (max-width: 730px) {
+  .hf-substat-top,
+  .hf-substat-track { width: clamp(90px, calc(16.76vw - 2.35px), 120px); }
+  .hf-substat-top   { font-size: clamp(15px, calc(1.676vw + 5.76px), 18px); }
+}
+/* ④ 모바일 ≤480px — 게이지 120→90px, 글씨 18→15px (350px에서 바닥, 이하 고정. 2×2는 ③에서) */
+@media (max-width: 480px) {
+  .hf-substat-top,
+  .hf-substat-track { width: clamp(90px, calc(23.08vw + 9.23px), 120px); }
+  .hf-substat-top   { font-size: clamp(15px, calc(2.308vw + 6.92px), 18px); }
+}
+/* ③ 2×2 접기 — 상단 960~821px · 하단 ≤550px (게이지 120px, 2×2면 칸당 폭 충분) */
+@media (min-width: 821px) and (max-width: 960px),
+       (max-width: 550px) {
+  .hf-substats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;  /* 게이지를 각 칸(1fr) 가운데로 → 추천점수↔게이지(왼쪽)와 우측패딩이 항상 좌우 대칭(gap==우측패딩·두 칸 동일폭이라). 우측정렬(end)이면 왼쪽 칸에 빈공간 쌓여 왼쪽 간격만 커졌음 */
+    align-items: start;
+    gap: 14px 16px;         /* 행 14 · 열 16 */
+  }
+}
+
+/* 모바일: 본문(기관/태그 | 코멘트)을 세로로 */
+@media (max-width: 480px) {
+  .hf-body { flex-direction: column; align-items: stretch; gap: 12px; }
+  .hf-comment {
+    border-left: none;
+    border-top: 1px solid var(--border);
+    padding-left: 0;
+    padding-top: 12px;
+  }
+}
+@media (max-width: 768px) {
+  .body-wrap { padding-bottom: 32px; }   /* 좌우는 --container-pad(유동) 유지, 모바일은 하단만 축소 */
+  .home-hero { padding: 32px 20px 24px; }   /* 가운데 정렬 영역 — 가로 20px 유지, 세로만 축소(스냅 없음) */
+}
+
+/* ── 사이드바 (공지사항) ── */
+.notice-box {
+  height: 305px;            /* 고정 높이 (히어로 카드와 동일) */
+  box-sizing: border-box;   /* 패딩·테두리 포함해 전체 높이 */
+  overflow: hidden;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 16px 20px 6px;   /* 헤딩 위 여유 ↑ · 마지막 row 아래 ↓ (top / 좌우 / bottom) */
+}
+
+.notice-head {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.notice-more {
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.notice-item {
+  padding: 5px 0 2px;
+  border-bottom: 1px solid var(--surface);
+}
+
+.notice-item:last-child { border-bottom: none; }
+
+.notice-item p {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-sub);   /* 약간 흐린 검정 — 헤딩(진한 --text-h)과 위계 구분 */
+  letter-spacing: -0.2px;
+  line-height: 1.1;
+  margin: 0;
+  white-space: nowrap;        /* 제목 1줄 고정(말줄임) → 카드 높이 가변 방지(레이아웃 시프트 X) */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notice-item span {
+  font-size: 11px;
+  line-height: 1.1;
+  color: var(--text-muted);
+}
+
+/* ── 범례 (모집중/모집완료) ── */
+.filter-bar-wrap {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.status-legend {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-left: auto;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legend-dot.dot-green { background: var(--primary-dark); }
+.legend-dot.dot-red   { background: var(--border-strong); }
+
+/* ── 모바일(<480px) 필터 드롭다운 ── 공용 Dropdown(size="sm"·label·dot)으로 통일. 데스크톱은 기존 pill 유지.
+   기본 숨김; 480px 미디어쿼리에서 표시. 각 드롭다운은 flex:1 래퍼로 반반 차지. */
+.home-filter-mobile { display: none; gap: 8px; width: 100%; }
+
+/* ── 필터바 ── */
+.home-filter-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.home-filter-pill {
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1.5px solid var(--border);
+  background: white;
+  color: var(--text-sub);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.home-filter-pill.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary-dark);
+}
+.home-filter-pill:focus:not(:focus-visible) {
+  background: white;
+  color: var(--text-sub);
+  border-color: var(--border);
+}
+.home-filter-pill.active:focus:not(:focus-visible) {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary-dark);
+}
+
+/* <480px: 데스크톱 pill·범례 숨기고 모바일 드롭다운 표시.
+   (.status-legend는 .filter-bar-wrap 안의 것만 — CardSection의 범례는 유지)
+   ※ .home-filter-bar 기본 규칙(display:flex) '뒤'에 와야 소스 순서로 이김(동일 특이도). */
+@media (max-width: 479.98px) {
+  .home-filter-bar,
+  .filter-bar-wrap .status-legend { display: none; }
+  .home-filter-mobile { display: flex; }
+}
+
+/* ── 섹션 ── */
+.section {
+  margin-bottom: 16px;
+}
+
+.section-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.section-title-row .section-title {
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+}
+
+.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 16px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+/* 가로 스크롤 줄 + 좌우 화살표 버튼 (잘린 듯 보이던 문제 해결) */
+.card-scroll-wrap {
+  position: relative;
+}
+
+.card-scroll {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;       /* Firefox: 스크롤바 숨김 (좌우 화살표로 이동) */
+  -ms-overflow-style: none;    /* 구 Edge/IE */
+}
+
+.card-scroll::-webkit-scrollbar { display: none; }   /* Chrome/Safari */
+
+.card-scroll-arrow {
+  position: absolute;
+  top: calc(50% - 3px); /* 카드 줄 세로 중앙 (스크롤바 높이 보정) */
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--text-sub);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.card-scroll-arrow:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.card-scroll-arrow:focus:not(:focus-visible):not(:active) {
+  background: white;
+  color: var(--text-sub);
+  border-color: var(--border);
+}
+
+.card-scroll-arrow:active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .card-scroll-arrow:hover {
+    background: white;
+    color: var(--text-sub);
+    border-color: var(--border);
+  }
+
+  .card-scroll-arrow:active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+}
+
+.card-scroll-arrow.left { left: -16px; }
+.card-scroll-arrow.right { right: -16px; }
+.card-scroll-arrow svg { width: 18px; height: 18px; display: block; }
+
+.card-empty {
+  background: white;
+  border: 1px dashed var(--border);
+  border-radius: var(--card-radius);
+  height: 126px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* ── HERO (검색바만) ── */
+.home-hero {
+  text-align: center;
+  padding: 28px 20px 24px;
+}
+
+.home-hero h1 {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -1.68px;   /* 전역 h1 규칙 제거에 따라 이관 — 타이틀 자간 유지(전엔 전역 h1에서 상속) */
+  margin: 0 0 8px;
+  color: var(--text);
+}
+
+.home-hero p {
+  color: var(--text-sub);
+  font-size: 15px;
+  margin: 0 0 24px;
+}
+
+.search-bar-wrap {
+  max-width: 580px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.search-bar-wrap input {
+  width: 100%;
+  padding: 14px 52px 14px 20px;
+  border: 2px solid var(--border);
+  border-radius: 50px;
+  font-size: 15px;
+  outline: none;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.search-bar-wrap input:focus {
+  border-color: var(--primary-dark);
+}
+
+/* 제안 드롭다운 열렸을 때: 검색창 아래 모서리를 각지게 + 드롭다운과 연결(이음새 숨김).
+   드롭다운 박스 쪽 붙는모양은 components/SearchSuggest.css(.is-suggest-open .search-suggest)가 담당. */
+.search-bar-wrap.is-suggest-open input {
+  border-color: transparent;              /* 활성 시 테두리 없앰(그림자로 대체) */
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+}
+
+.search-bar-wrap button {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--primary);
+  border: none;
+  color: white;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.place-card-sm {
+  width: 250px;
+  height: 120px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: white;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+  border-radius: var(--card-radius);
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: box-shadow 0.15s;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+}
+
+/* 1행: 좌(기관명+근무지) | 우(점수+라벨) 2컬럼 · 2행: 태그 */
+.pc-row1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.pc-left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.pc-right {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.name-box,
+.score-box,
+.tag-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.name-box {
+  gap: 2px;
+}
+
+.score-box {
+  gap: 2px;
+}
+
+.tag-box {
+  min-height: 22px; /* 태그 1행 */
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-height: 22px;
+  align-content: flex-start;
+}
+
+.tag-row-wrap {
+  /* 학위/학적 자동 줄바꿈 — 한 줄에 다 들어가면 1줄, 안 들어가면 2줄 */
+  flex: 1;
+}
+
+.tag-row .tag,
+.tag-box .tag {
+  margin: 0;
+}
+
+.place-card-sm:hover {
+  box-shadow: var(--shadow-card);
+}
+
+.place-card-sm.status-closed {
+  border-left: 4px solid var(--border-strong);
+}
+
+.place-card-sm.status-closed .pname,
+.place-card-sm.status-closed .pplace {
+  color: var(--text-muted);
+}
+
+/* 추천점수는 리뷰 정보이므로 모집완료 여부와 관계없이 기본 점수색을 유지한다. */
+
+/* 기관/근무지 2줄 헤더 — 5곳 통일: 기관 13/500, 근무지 21/800, lh 1.2, 두 줄 간격은 .name-box gap:2px가 담당 */
+.place-card-sm .pname {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text-sub);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.place-card-sm .pplace {
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.place-card-sm .pbig {
+  flex-shrink: 0;
+  font-size: 37px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.place-card-sm .psub {
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--text-muted);
+  margin: 0;
+  text-align: center;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+}
+
+.tag-national { background: var(--primary-deep); color: white; font-weight: 700; }
+.tag-school   { background: var(--primary); color: white; font-weight: 700; }
+.tag-loc      { background: white; color: var(--primary-dark); box-shadow: inset 0 0 0 1px var(--primary-mid); }
+.tag-dur      { background: white; color: var(--accent-deep); box-shadow: inset 0 0 0 1px var(--accent-mid); }
+.tag-region   { background: #E6F4EA; color: #1B7E40; }
+.tag-gray     { background: var(--surface); color: var(--text-sub); }
+.tag-blue     { background: var(--primary-light); color: var(--primary-dark); }
+.tag-orange   { background: var(--danger-light); color: #C53847; }

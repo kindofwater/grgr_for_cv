@@ -1,0 +1,151 @@
+/* 공용 상단 네비게이션 스타일 — 단일 소스(이전엔 Home.css·Login.css에 중복돼 페이지마다 달랐음).
+   색·폰트 토큰(--primary, --sans 등)은 index.css :root에서 전역 정의. 폰트는 inherit 방지 위해 명시. */
+.navbar {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  height: var(--nav-h);
+  display: flex;
+  justify-content: center;   /* 배경은 화면 끝까지, 안쪽 nav-inner만 컨테이너 폭으로 가운데 */
+}
+
+/* navbar 실제 내용 행 — 전 페이지 콘텐츠와 동일한 컨테이너 폭/패딩으로 좌우 정렬 맞춤 */
+.nav-inner {
+  width: 100%;
+  /* 본문 .body-wrap(content-box: max-width=--container, 패딩은 그 바깥)과 "유효 폭"을 일치시킨다.
+     nav-inner는 border-box라 총폭에 패딩이 포함되므로, max-width에 좌우 패딩(2배)을 더해야
+     내용폭이 --container로 같아진다 → 로고·계정이 모든 폭에서 본문 카드와 정렬(센터링 임계폭도 일치). */
+  max-width: calc(var(--container) + var(--container-pad) * 2);
+  padding-inline: var(--container-pad);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  font-family: var(--sans);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-links { display: flex; gap: 24px; flex: 1; }
+.nav-links a {
+  position: relative;            /* 강조 밑줄(::after)의 기준점 */
+  color: var(--text-sub);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--primary-dark); }
+/* 현재 탭 강조 밑줄 — border-bottom 대신 absolute ::after로.
+   ① 링크 박스 높이에 안 들어가므로 텍스트'만' 기준으로 세로 중앙정렬됨(로고·계정과 일치)
+   ② 레이아웃 밖이라 밑줄이 켜져도 텍스트 위치가 안 바뀜(opacity만 토글 → 우글거림 없음) */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--primary);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.nav-links a.nav-active { color: var(--primary-dark); font-weight: 700; }
+.nav-links a.nav-active::after { opacity: 1; }
+
+.nav-right { display: flex; align-items: center; gap: 12px; }
+
+.user-pill {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+}
+
+.btn-login {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary-dark);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-signup-nav {
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-signup-nav:hover { filter: brightness(1.08); }
+
+@media (max-width: 768px) {
+  /* navbar 높이는 --nav-h(52px)로 자동 적용 */
+  .nav-inner { gap: 12px; }   /* 모바일은 링크 간격만 축소 (좌우 패딩은 --container-pad가 16px로 자동) */
+  .nav-links { display: none; }
+  .nav-right { margin-left: auto; }   /* nav-links 숨김으로 사라진 flex:1 대신 오른쪽 정렬 */
+}
+
+/* ── 하단 탭바 (모바일 전용) ── nav-links가 숨겨질 때 메뉴 이동 제공 */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 54px;
+  background: white;
+  border-top: 1px solid var(--border);
+  z-index: 1000;
+  box-shadow: 0 -2px 8px rgba(39, 41, 50, 0.06);
+}
+.bottom-nav a {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;            /* 아이콘↔라벨 간격 축소(3→2) */
+  line-height: 1;      /* 라벨 줄높이의 위 여백(leading) 제거 → 아이콘에 더 붙음 */
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-sub);
+  cursor: pointer;
+  text-decoration: none;
+  font-family: var(--sans);
+  -webkit-tap-highlight-color: transparent;
+}
+.bottom-nav a:hover { color: var(--text); }
+.bottom-nav a:active,
+.bottom-nav a.nav-active { color: var(--text-sub); }
+
+@media (max-width: 768px) {
+  .bottom-nav { display: flex; }
+  body { padding-bottom: 54px; }   /* 고정 탭바가 콘텐츠를 가리지 않도록 */
+}

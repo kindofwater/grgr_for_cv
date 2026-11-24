@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>근로고래 리뷰 작성 이벤트</title>
+    <style>
+      @import url('https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css');
+
+      @page { size: A4 portrait; margin: 0; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: #edf2f8;
+        color: #10254e;
+        font-family: 'NanumSquare', 'Malgun Gothic', sans-serif;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .poster {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0 auto;
+        padding: 14mm 16mm 10mm;
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+      }
+      .topline { width: 18mm; height: 1.7mm; background: #1769e0; margin-bottom: 5mm; }
+      .hero { margin-top: 10mm; }
+      .eyebrow {
+        color: #1769e0;
+        font-size: 15pt;
+        font-weight: 800;
+        letter-spacing: -0.055em;
+        line-height: 1.45;
+      }
+      h1 {
+        margin: 3mm 0 0;
+        font-size: 52pt;
+        font-weight: 800;
+        letter-spacing: -0.095em;
+        line-height: 1.04;
+      }
+      .lead {
+        margin: 5mm 0 0;
+        color: #52627d;
+        font-size: 15pt;
+        font-weight: 400;
+        letter-spacing: -0.045em;
+        line-height: 1.55;
+      }
+      .rules {
+        margin-top: 10mm;
+        padding: 6mm 0;
+        border-top: 1.2px solid #10254e;
+        border-bottom: 1.2px solid #10254e;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 5mm;
+      }
+      .rule-number { color: #1769e0; font-size: 11pt; font-weight: 800; line-height: 1.4; }
+      .rule-title { margin-top: 1.5mm; font-size: 13pt; font-weight: 800; letter-spacing: -0.045em; line-height: 1.45; }
+      .rule-copy { margin-top: 1mm; color: #66738a; font-size: 9.5pt; font-weight: 400; letter-spacing: -0.035em; line-height: 1.55; }
+      .event {
+        margin-top: 10mm;
+        padding: 7mm 8mm 6.5mm;
+        background: #10254e;
+        color: #fff;
+      }
+      .event-tag { color: #9fc8ff; font-size: 10pt; font-weight: 800; letter-spacing: 0.08em; line-height: 1.45; }
+      .event h2 { margin: 2.5mm 0 0; font-size: 26pt; font-weight: 800; letter-spacing: -0.07em; line-height: 1.2; }
+      .event-intro { margin: 3mm 0 0; color: #dbe8ff; font-size: 12pt; font-weight: 400; letter-spacing: -0.045em; line-height: 1.6; }
+      .rewards { margin-top: 6mm; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid #6e88b3; }
+      .reward { min-height: 26mm; padding: 4mm 4mm 0 0; }
+      .reward + .reward { padding-left: 4mm; border-left: 1px solid #6e88b3; }
+      .reward-count { color: #75b0ff; font-size: 25pt; font-weight: 800; letter-spacing: -0.075em; line-height: 1; }
+      .reward-title { margin-top: 2.3mm; font-size: 12pt; font-weight: 800; letter-spacing: -0.055em; line-height: 1.35; }
+      .reward-note { margin-top: 1mm; color: #c4d5f0; font-size: 9.3pt; font-weight: 400; letter-spacing: -0.03em; line-height: 1.45; }
+      .action {
+        margin-top: 10mm;
+        display: grid;
+        grid-template-columns: 39mm 1fr;
+        gap: 8mm;
+        align-items: center;
+      }
+      .qr {
+        width: 39mm;
+        height: 39mm;
+        padding: 2mm;
+        border: 1.2px solid #10254e;
+        background: #fff;
+      }
+      .qr img { width: 100%; height: 100%; display: block; }
+      .action-title { color: #10254e; font-size: 18pt; font-weight: 800; letter-spacing: -0.065em; line-height: 1.25; }
+      .action-copy { margin-top: 2.5mm; color: #52627d; font-size: 10.5pt; font-weight: 400; letter-spacing: -0.04em; line-height: 1.55; }
+      .url { margin-top: 3.5mm; color: #1769e0; font-size: 14pt; font-weight: 800; letter-spacing: -0.035em; line-height: 1.35; }
+      .footer { margin-top: 6mm; display: flex; justify-content: space-between; color: #7a879b; font-size: 8.5pt; font-weight: 400; letter-spacing: -0.025em; line-height: 1.45; }
+      @media print {
+        html, body { width: 210mm; height: 297mm; margin: 0; }
+        .poster { height: 297mm; min-height: 0; overflow: hidden; box-shadow: none; }
+      }
+      @media screen { .poster { box-shadow: 0 6px 24px rgba(18, 37, 78, 0.14); } }
+    </style>
+  </head>
+  <body>
+    <main class="poster">
+      <div class="topline"></div>
+      <section class="hero">
+        <div class="eyebrow">근로장학생을 위한 근무지 리뷰 사이트,</div>
+        <h1>근로고래</h1>
+        <p class="lead">일하기 전에, 실제 근로장학생이 남긴<br />진짜 후기를 확인하세요.</p>
+      </section>
+
+      <section class="rules" aria-label="근로고래 이용 방법">
+        <div>
+          <div class="rule-number">01</div>
+          <div class="rule-title">근무지 검색</div>
+          <div class="rule-copy">학교·직무·지역별로<br />근무지를 찾아보세요.</div>
+        </div>
+        <div>
+          <div class="rule-number">02</div>
+          <div class="rule-title">리뷰 확인</div>
+          <div class="rule-copy">실제 근무자가 남긴<br />경험을 확인하세요.</div>
+        </div>
+        <div>
+          <div class="rule-number">03</div>
+          <div class="rule-title">리뷰 작성</div>
+          <div class="rule-copy">나의 경험을 남겨<br />다음 선택을 도와주세요.</div>
+        </div>
+      </section>
+
+      <section class="event">
+        <div class="event-tag">REVIEW WRITING EVENT</div>
+        <h2>리뷰 작성 이벤트</h2>
+        <p class="event-intro">리뷰를 작성해 주신 분들 중 추첨을 통해<br />총 11분께 선물을 드립니다.</p>
+        <div class="rewards">
+          <div class="reward">
+            <div class="reward-count">1명</div>
+            <div class="reward-title">메가커피 1만원권</div>
+            <div class="reward-note">기프티콘 증정</div>
+          </div>
+          <div class="reward">
+            <div class="reward-count">10명</div>
+            <div class="reward-title">메가커피 아메리카노</div>
+            <div class="reward-note">교환권 증정</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="action">
+        <div class="qr">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&amp;format=svg&amp;data=https%3A%2F%2Fgrgr.kr" alt="grgr.kr 접속 QR 코드" />
+        </div>
+        <div>
+          <div class="action-title">지금 리뷰 남기기</div>
+          <div class="action-copy">QR을 스캔하거나 아래 주소로 접속하세요.</div>
+          <div class="url">grgr.kr</div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>Instagram @grgr_review_official</span>
+        <span>근로고래</span>
+      </footer>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+/* 공지 목록 (Notice.jsx) */
+.notice-wrap { min-height: calc(100svh - var(--nav-h)); background: var(--bg); }
+
+.notice-page { max-width: var(--container-narrow); margin: 0 auto; padding: 40px var(--container-pad) 80px; }
+
+.notice-state { color: var(--text-sub); font-size: 14px; padding: 32px 0; text-align: center; }
+.notice-retry {
+  margin-top: 12px; padding: 8px 16px; border: 1px solid var(--border);
+  border-radius: 8px; background: var(--card); color: var(--text); cursor: pointer;
+}
+.notice-retry:hover { border-color: var(--border-strong); }
+
+.notice-list { display: flex; flex-direction: column; gap: 10px; list-style: none; padding: 0; margin: 0; }
+
+.notice-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--card-radius);
+  overflow: hidden; transition: border-color .15s, box-shadow .15s;
+}
+.notice-card:hover,
+.notice-card.is-open { border-color: var(--border-strong); box-shadow: var(--shadow-sm); }
+
+/* 클릭 영역(헤더) = 버튼. 패딩 축소(회의 요청) */
+.notice-card-head {
+  width: 100%; display: flex; align-items: center; gap: 12px;
+  padding: 13px 18px; background: none; border: none; cursor: pointer;
+  font-family: inherit; text-align: left; color: inherit;
+}
+.notice-card-head:focus:not(:focus-visible) { background: none; }
+.notice-card-main { flex: 1; min-width: 0; }
+.notice-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.notice-date { font-size: 12px; color: var(--text-muted); }
+.notice-card-title { font-size: 18px; font-weight: 600; color: var(--text); letter-spacing: -0.2px; line-height: 1.45; word-break: keep-all; }   /* 제목도 어절 단위 줄바꿈 */
+.notice-chevron { flex: 0 0 auto; color: var(--text-muted); font-size: 18px; transition: transform .18s ease; }
+.notice-card.is-open .notice-chevron { transform: rotate(180deg); }
+
+/* 펼침 애니메이션: grid-rows 0fr→1fr (auto 높이까지 JS 없이 부드럽게) */
+.notice-card-bodywrap { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .24s ease; }
+.notice-card.is-open .notice-card-bodywrap { grid-template-rows: 1fr; }
+.notice-card-bodyinner { overflow: hidden; min-height: 0; }
+
+/* 펼쳐진 본문 — 제목과 시각적으로 구분(상단 보더) */
+.notice-card-body { border-top: 1px solid var(--border); padding: 14px 18px 18px; background: var(--bg); }   /* 본문 영역 얕은 회색 배경으로 구분·시인성 #19 (--surface→--bg로 한 단계 얕게) */
+.notice-body-state { color: var(--text-muted); font-size: 13px; }
+/* keep-all = 한국어 어절(공백) 단위 줄바꿈. overflow-wrap은 URL 등 긴 통짜 문자열이 카드 밖으로 넘치는 것만 방지 */
+.notice-body-text { font-size: 16px; color: var(--text); line-height: 1.7; white-space: pre-wrap; word-break: keep-all; overflow-wrap: break-word; }   /* 본문 글씨 진하게(검정) #19 */

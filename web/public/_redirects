@@ -1,0 +1,17 @@
+# 알려진 SPA 경로만 루트 앱으로 rewrite한다.
+# 그 밖의 경로는 Cloudflare Pages가 404.html과 HTTP 404로 응답한다.
+/                                      /  200
+/home                                  /  200
+/search                                /  200
+/login                                 /  200
+/reset-password                        /  200
+/ad                                    /  200
+/worksite/:id/review/:reviewId/edit    /  200
+/worksite/:id/review                    /  200
+/worksite/:id                           /  200
+/exchange                              /  200
+/mypage                                /  200
+/notice                                /  200
+/privacy                               /  200
+/terms                                 /  200
+/contact                               /  200

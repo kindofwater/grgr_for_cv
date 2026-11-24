@@ -1,0 +1,66 @@
+.toast-region {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);   /* 상단 중앙 */
+  z-index: var(--z-toast);
+  max-width: min(380px, calc(100vw - 32px));
+  text-align: center;
+  pointer-events: none;
+}
+
+.toast-message {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: var(--shadow-md);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  width: fit-content;      /* 짧은 메시지는 내용 폭만큼만 — 전폭 바 방지 */
+  margin: 0 auto;          /* region(max-width 상한) 안에서 중앙 */
+  animation: toast-lifecycle var(--toast-duration) ease both;
+}
+
+/* 안내(기본) */
+.toast-info {
+  border-color: var(--primary-mid);
+  background: var(--primary-light);
+  color: var(--primary-deep);
+}
+
+/* 오류 */
+.toast-error {
+  border-color: var(--danger-mid);
+  background: var(--danger-light);
+  color: #C53847;   /* --danger(#FF6978)는 연분홍 배경 위에서 대비가 모자람 */
+}
+
+/* 상단에서 내려오며 등장 → 위로 사라짐 */
+@keyframes toast-lifecycle {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  12%,
+  82% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+/* 모바일도 데스크톱과 같은 중앙 정렬 + 폭 상한 유지.
+   기존 '좌우 여백 채우는 전폭 바'(left/right 고정 + max-width:none)는 가로가 너무 길어 제거(2026-07-17). */
+@media (max-width: 480px) {
+  .toast-region {
+    top: 16px;
+  }
+}

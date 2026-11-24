@@ -1,0 +1,131 @@
+/* 근장찾기(Search) 전용 스타일. 토큰=index.css, 태그·범례=Home.css 전역 재사용. */
+.search-page { min-height: calc(100svh - var(--nav-h)); background: var(--bg); }
+.search-loading, .search-error, .search-empty {
+  max-width: 760px; margin: 0 auto; padding: 80px 20px; text-align: center; color: var(--text-muted);
+}
+
+/* search-head */
+.search-head { background: white; border-bottom: 1px solid var(--border); padding: 24px clamp(16px, calc(8.63vw - 42.9px), 40px) 12px; }
+.search-bar-md { max-width: 660px; margin: 0 auto; position: relative; }
+.search-bar-md input { width: 100%; box-sizing: border-box; padding: 16px 60px 16px 24px; border: 2px solid var(--border); border-radius: 50px; font-size: 16px; outline: none; font-family: inherit; }
+.search-bar-md input:focus { border-color: var(--primary-dark); }
+.search-bar-md button { position: absolute; right: 7px; top: 50%; transform: translateY(-50%); background: var(--primary); border: none; color: white; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; user-select: none; }
+.search-bar-md button svg { width: 18px; height: 18px; }
+.filter-toggle-btn { text-align: center; margin-top: 10px; }
+.filter-toggle-btn button { background: transparent; border: 1px solid var(--border); color: var(--text-sub); padding: 5px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; font-family: inherit; }
+.filter-toggle-btn button:focus:not(:focus-visible) { background: transparent; }
+
+/* 제안 드롭다운 박스·붙는모양(드롭다운 쪽)은 components/SearchSuggest.css에 있음(홈과 공용).
+   여기선 '열렸을 때' 검색창 input 모서리만 — 래퍼 클래스가 페이지마다 달라 각 페이지가 담당. */
+.search-bar-md.is-suggest-open input {
+  border-color: transparent;              /* 활성 시 테두리 없앰(아래 그림자로 대체) */
+  border-radius: 16px 16px 0 0;           /* 알약 → 위만 둥근 사각 */
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);  /* 아래 그림자는 드롭다운이 덮음 → 위·옆만 보임 */
+}
+
+/* lock-banner */
+.lock-banner { background: linear-gradient(180deg, rgba(255,251,235,0.7), rgba(255,251,235,1)); border-bottom: 1px solid var(--accent-mid); padding: 12px 40px; display: flex; align-items: center; justify-content: center; gap: 18px; flex-wrap: wrap; }
+.lock-banner-text { font-size: 13px; color: var(--accent-deep); font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+.lock-banner-icon { display: inline-flex; align-items: center; }
+.lock-banner-icon svg { display: block; }
+.lock-banner-cta { background: var(--accent); color: white; border: none; padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; box-shadow: 0 1px 2px rgba(250, 169, 22, 0.32); transition: filter 0.15s, transform 0.15s; }
+.lock-banner-cta:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+/* results-bar */
+.results-bar { max-width: var(--container-narrow); margin: 0 auto; padding: 8px clamp(16px, calc(8.63vw - 42.9px), 40px) 10px; display: flex; justify-content: space-between; align-items: center; }
+.results-bar span { font-size: 14px; color: var(--text-sub); }
+.results-bar strong { color: var(--text); }
+/* 좁은 폭(<550px): '전체 근장 N개' 텍스트 숨김 — 개수 드롭다운·정렬 공간 확보 */
+@media (max-width: 549.98px) {
+  .results-count { display: none; }
+}
+/* 더 좁은 폭(<435px): 모집중/모집완료 범례도 숨김 — 개수·정렬 드롭다운만 남김 */
+@media (max-width: 434.98px) {
+  .status-legend { display: none; }
+}
+/* 페이지당 개수·정렬은 공용 Dropdown(size="sm")으로 통일 — 너비는 래퍼 div에서 지정 */
+
+/* result-list / result-card */
+.result-list { max-width: var(--container-narrow); margin: 0 auto; padding: 0 clamp(16px, calc(8.63vw - 42.9px), 40px) 40px; display: flex; flex-direction: column; gap: 8px; }
+/* line-height·letter-spacing: 카드 안 텍스트만 목업 기준(normal/-0.01em)으로 덮어씀.
+   앱 root는 18px/145%/+0.18px라 그냥 두면 행간·카드높이가 목업과 달라진다(카드 한정 scoped). */
+.result-card { position: relative; background: white; border: 1px solid var(--border); border-radius: var(--card-radius); padding: 20px clamp(12px, calc(5vw - 13px), 20px); cursor: pointer; display: grid; grid-template-columns: clamp(140px, calc(7.69vw + 109.23px), 160px) 1fr auto; gap: 16px clamp(8px, calc(6.28vw - 44.25px), 16px);   /* 열 간격: 좁을 때 최저 8px → 959px+에서 최대 16px */ transition: box-shadow 0.15s; align-items: center; line-height: normal; letter-spacing: -0.01em; }
+.result-card-detail-link { position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
+.result-card-detail-link:focus-visible { outline: 3px solid color-mix(in srgb, var(--primary) 55%, transparent); outline-offset: 2px; }
+.result-card:hover { box-shadow: var(--shadow-card); }
+.result-card.status-open { border-left: 4px solid var(--primary); }
+.result-card.status-closed { border-left: 4px solid var(--border-strong); }
+.status-closed .rc-org, .status-closed .rc-name { color: var(--text-muted); }
+/* 기관/근무지 2줄 헤더 — 5곳 통일: 기관 13/500, 근무지 21/800, lh 1.2, 두 줄 간격 2px */
+.rc-org { font-size: 13px; font-weight: 500; line-height: 1.2; color: var(--text-sub); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rc-name { font-size: 21px; font-weight: 800; line-height: 1.2; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tag-rows { margin-top: 6px; display: flex; flex-direction: column; gap: 4px; }
+/* min-height: 둘째 tag-row가 태그 0개여도 한 줄(태그 높이 22px=11px*1.4+padding6) 예약 → 전 카드 동일 높이 */
+.tag-row { display: flex; gap: 5px; flex-wrap: wrap; min-height: 22px; }
+/* 학교근장 전용: 층 구분 없이 순서대로 흘리되 2행 높이(22*2+4=48px)는 예약 → 국가근로 2행 카드와 동일 높이.
+   align-content:flex-start = 한 줄만 찰 땐 위쪽에 붙고 아래 예약공간은 비워 둠. gap = 세로4·가로5(국가근로 정합). */
+.tag-rows-flow { margin-top: 6px; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 4px 5px; min-height: 48px; }
+/* 전역 .tag의 유산 margin(우4·하4, gap 이전 간격용)이 .tag-row 밖에선 리셋 안 됨(Home.css는
+   .tag-row/.tag-box 안만 리셋) → flex line이 25.4px로 부풀어 행간 7.8px·컨테이너 54.8px 됐던 버그.
+   직계 태그도 리셋해 국가근장 카드(행간 4px·48px)와 정합. */
+.tag-rows-flow .tag { margin: 0; }
+.rc-mid { display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+.rating-bars { display: flex; gap: clamp(3px, 1.8vw, 18px); }
+.rb-item { flex: 1; min-width: 70px; }
+.rb-label { font-size: clamp(8pt, calc(2.804vw - 6.53px), 18px); color: var(--text); display: flex; justify-content: space-between; margin-bottom: 4px; }   /* ≥875px 18px(최대) → 661px서 12px까지 선형 축소(2.804vw). ≤660은 2×2 레이아웃으로 16px */
+.rb-label span { font-weight: 700; color: var(--text); }
+.rb-track { height: 12px; background: var(--surface); border-radius: 5px; overflow: hidden; }
+.rb-fill { height: 100%; border-radius: 3px; }
+.fill-blue { background: var(--primary); }
+.fill-yellow { background: var(--warn); }
+.fill-red { background: var(--danger); }
+/* 세부점수 게이지는 모집완료여도 점수색 유지(2026-07-21 색 통일 A안 — 점수는 모집 여부와 무관한 리뷰 정보.
+   모집 상태는 배지·좌측 테두리·이름 회색이 전달). 예전 .status-closed .rb-fill 회색 오버라이드 제거. */
+/* 오른쪽 추천점수 숫자도 .big-num 기본색을 그대로 사용한다. */
+.rec-text { font-size: 12px; color: var(--text-muted); }
+.rec-text strong { color: var(--primary-dark); }
+.rc-right { display: flex; flex-direction: column; align-items: center; justify-content: center; justify-self: end; padding-left: clamp(10px, calc(7.87vw - 55.48px), 20px); }   /* 내부 글자는 센터 유지, 블록은 오른쪽 패딩에 붙여 좌우 대칭.
+   padding-left: 막대↔추천점수 간격 보강(오른쪽만 — column-gap은 왼쪽과 공유라 안 건드림). 832px 10px → 959px+ 20px 선형(gap과 같은 두 점), 체감 간격 = gap(8~16)+이 값 */
+.rc-right-locked { padding-left: 0; }
+.big-num { font-size: 40px; font-weight: 800; color: var(--primary-dark); line-height: 1; }   /* 46px 캡 clamp → 40px 고정(2026-07-21 — 오른쪽 gap 대비 숫자가 과했음) */
+.big-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; text-align: center; }
+.btn-review-write { position: relative; z-index: 2; margin-top: 8px; padding: 4px 10px; font-size: clamp(9.5px, 1.39vw, 11px); font-weight: 600; color: var(--primary-dark); background: white; border: 1.5px solid var(--primary); border-radius: 6px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+.btn-review-write:hover { background: var(--primary-light); }
+.score-blur { filter: blur(16px) grayscale(1); user-select: none; pointer-events: none; }
+
+/* pagination 스타일은 components/Pagination.css로 이동(공용) */
+
+@media (max-width: 768px) {
+  .lock-banner { padding: 10px 16px; gap: 10px; }
+  .lock-banner-text { font-size: 12px; }
+  /* 카드는 768px에서 그대로 유지(막대·3열·근무지명 말줄임·gap·padding 모두 base 사용). */
+}
+
+/* ≤660px: 게이지(막대 트랙)만 숨기고 항목명+숫자(rb-label)는 유지 — 3열 레이아웃은 그대로.
+   게이지 빠진 자리만큼 글자를 키우고, 숫자는 막대색(점수색)으로 칠해 색 정보 보존 */
+@media (max-width: 660px) {
+  .rb-track { display: none; }
+  /* 막대 자리에 항목 4개를 2열×2행 그리드로 (업무·자기계발 / 분위기·시간유연성) */
+  .rating-bars { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; width: 100%; max-width: 310px; }   /* 2×2: 칸 최대 145px(블록 310px=145+20+145) — width:100%로 채우다 캡, 좁으면 줄어듦 */
+  .rc-mid { align-items: center; }   /* 블록을 가운데 칸 중앙 정렬 → 정보쪽·점수쪽 간격 동일(1열과 동일 정책) */
+  .rb-item { min-width: 0; }
+  .rb-label { margin-bottom: 0; font-size: 16px; }   /* 2×2 구간(500~660px): 안 줄이고 16px 고정 */
+  .rb-label span.num-blue   { color: var(--primary); }
+  .rb-label span.num-yellow { color: var(--warn); }
+  .rb-label span.num-red    { color: var(--danger); }
+}
+
+/* ≤525px: 세부점수 2열→1열(12px 고정) + '리뷰 N개·추천율 X%' 숨김 */
+@media (max-width: 525px) {
+  .rating-bars { grid-template-columns: 1fr; width: 100%; max-width: 145px; }   /* 1열: 칸 최대 145px — width:100%로 채우다 145 캡, 좁으면 같이 줄어듦 */
+  .rc-mid { align-items: center; }   /* 130px 블록을 가운데 칸 중앙 정렬 → 정보쪽·점수쪽 간격 동일 */
+  .rec-text { display: none; }
+  .rb-label { font-size: 18px; }   /* 1열: 글자 18px 고정(525→350 구간 안 줄임) */
+}
+
+/* <420px: 세부점수(가운데 칸) 통째로 숨김 → 카드 2열(정보 | 점수)로 축소. (400→420 상향 2026-07-21)
+   점수칸 auto(내용폭) — justify-self:end로 오른쪽 패딩에 붙어 좌우 대칭 유지 */
+@media (max-width: 419.98px) {
+  .result-card { grid-template-columns: minmax(0, 1fr) auto; }   /* minmax(0,…): 긴 근무지명이 칸을 넓혀 가로 오버플로 나는 것 방지(이름은 …로 잘림) */
+  .rc-mid { display: none; }
+}

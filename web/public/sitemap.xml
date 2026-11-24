@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 정적 폴백. 빌드 시 scripts/generate-sitemap.mjs가 dist 사본을 근무지 URL 포함본으로 덮어씀.
+     이 파일이 그대로 배포됐다면 생성 스크립트가 실패한 것(빌드 로그 [sitemap] 확인). -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://grgr.kr/home</loc></url>
+  <url><loc>https://grgr.kr/search</loc></url>
+  <url><loc>https://grgr.kr/notice</loc></url>
+  <url><loc>https://grgr.kr/privacy</loc></url>
+  <url><loc>https://grgr.kr/terms</loc></url>
+  <url><loc>https://grgr.kr/contact</loc></url>
+</urlset>
